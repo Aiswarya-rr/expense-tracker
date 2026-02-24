@@ -2,6 +2,7 @@ require('dotenv').config({ path: '../.env.local' })
 const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
 const cookieParser = require('cookie-parser')
 
 const { connectDB } = require('./lib/db')
@@ -9,10 +10,20 @@ const { connectDB } = require('./lib/db')
 const authRoutes = require('./routes/auth')
 const txRoutes = require('./routes/transactions')
 const analyticsRoutes = require('./routes/analytics')
+const budgetRoutes = require('./routes/budgets')
 
 const app = express()
 
-app.use(cors({ origin: 'http://localhost:3003' }))
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (['http://localhost:3000', 'http://localhost:3003'].includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  }
+}))
 app.use(express.json())
 app.use(cookieParser())
 
@@ -23,6 +34,7 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/auth', authRoutes)
 app.use('/api/transactions', txRoutes)
 app.use('/api/analytics', analyticsRoutes)
+app.use('/api/budgets', budgetRoutes)
 
 const PORT = process.env.PORT || 4000
 

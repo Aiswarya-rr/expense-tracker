@@ -8,7 +8,7 @@ const router = express.Router()
 const txSchema = z.object({
   type: z.enum(['income', 'expense']),
   category: z.string().min(1),
-  amount: z.number().positive(),
+  amount: z.coerce.number().positive(),
   description: z.string().optional().default(''),
   date: z.coerce.date().optional(),
 })
