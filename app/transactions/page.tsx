@@ -1,6 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import Link from "next/link"
+import { Plus, Upload, FileText, Plane, Home, CreditCard, BarChart3, PiggyBank } from "lucide-react"
 
 interface Transaction {
   _id: string
@@ -17,6 +19,8 @@ export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(false)
   const [dailyData, setDailyData] = useState<{ day: number; total: number }[]>([])
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -78,6 +82,36 @@ export default function TransactionsPage() {
     }
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      handleUpload(e.target.files[0])
+    }
+  }
+
+  const handleUpload = async (file: File) => {
+    setUploading(true)
+    const formData = new FormData()
+    formData.append('receipt', file)
+
+    try {
+      const response = await fetch('http://localhost:4000/api/upload-receipt', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        body: formData
+      })
+
+      if (response.ok) {
+        fetchTransactions()
+        fetchDaily()
+        if (fileInputRef.current) fileInputRef.current.value = ''
+      }
+    } catch (error) {
+      console.error("Upload failed", error)
+    } finally {
+      setUploading(false)
+    }
+  }
+
   if (!user) {
     return <div className="min-h-screen bg-black text-zinc-200 flex items-center justify-center">Loading...</div>
   }
@@ -86,103 +120,135 @@ export default function TransactionsPage() {
   const totalExpense = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0)
 
   return (
-    <div className="min-h-screen bg-black text-zinc-200">
+    <div className="min-h-screen bg-black text-purple-200">
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-zinc-900/80 border-r border-zinc-800 min-h-screen sticky top-0 hidden md:block">
-          <div className="p-6 flex flex-col items-center gap-3">
-            <div className="h-16 w-16 rounded-full bg-zinc-800" />
-            <div className="text-sm text-zinc-400">{user.name}</div>
-          </div>
-          <nav className="px-3 space-y-1 text-sm">
-            <a href="/home" className="block px-4 py-2 rounded-md hover:bg-zinc-800">Home</a>
-            <a href="/transactions" className="block px-4 py-2 rounded-md bg-emerald-600/10 text-emerald-400">Expenses</a>
-            <a href="/analytics" className="block px-4 py-2 rounded-md hover:bg-zinc-800">Analytics</a>
-            <a href="/budgets" className="block px-4 py-2 rounded-md hover:bg-zinc-800">Budgets</a>
-            <a href="#" className="block px-4 py-2 rounded-md hover:bg-zinc-800">Trips</a>
-            <a href="#" className="block px-4 py-2 rounded-md hover:bg-zinc-800">Approvals</a>
-            <a href="#" className="block px-4 py-2 rounded-md hover:bg-zinc-800">Settings</a>
-            <button
-              onClick={() => { localStorage.removeItem('token'); localStorage.removeItem('user'); window.location.href = '/auth/signup' }}
-              className="w-full text-left px-4 py-2 rounded-md hover:bg-zinc-800 text-red-400"
-            >Logout</button>
+        <div className="w-64 bg-gradient-to-br from-purple-900 to-purple-950 min-h-screen border-r border-purple-800 p-6">
+          <div className="text-lg font-bold text-purple-300 mb-8">Expense Tracker</div>
+          <nav className="space-y-4">
+            <Link href="/" className="flex items-center gap-3 text-base text-purple-300 hover:text-white transition">
+              <Home className="w-5 h-5" />
+              Home
+            </Link>
+            <Link href="/transactions" className="flex items-center gap-3 text-base text-white font-medium">
+              <CreditCard className="w-5 h-5" />
+              Transactions
+            </Link>
+            <Link href="/analytics" className="flex items-center gap-3 text-base text-purple-300 hover:text-white transition">
+              <BarChart3 className="w-5 h-5" />
+              Analytics
+            </Link>
+            <Link href="/budgets" className="flex items-center gap-3 text-base text-purple-300 hover:text-white transition">
+              <PiggyBank className="w-5 h-5" />
+              Budgets
+            </Link>
           </nav>
-          <div className="mt-10 px-4 text-xs text-zinc-500">EXPENSIO</div>
-        </aside>
+        </div>
 
-        {/* Main */}
-        <main className="flex-1 p-6 md:p-10">
-          <div className="max-w-6xl mx-auto space-y-6">
-            {/* Top cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-4">
-                <div className="text-sm text-zinc-400 mb-3">Pending Tasks</div>
-                <div className="space-y-2 text-zinc-300 text-sm">
-                  <div className="flex items-center justify-between"><span>Pending Approvals</span><span className="text-zinc-400">5</span></div>
-                  <div className="flex items-center justify-between"><span>New Trips Registered</span><span className="text-zinc-400">1</span></div>
-                  <div className="flex items-center justify-between"><span>Unreported Expenses</span><span className="text-zinc-400">4</span></div>
-                  <div className="flex items-center justify-between"><span>Upcoming Expenses</span><span className="text-zinc-400">2</span></div>
-                  <div className="flex items-center justify-between"><span>Unreported Advances</span><span className="text-zinc-400">0</span></div>
+        {/* Main Content */}
+        <main className="flex-1 p-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-2xl font-bold text-purple-300 mb-6">Transactions</div>
+
+            {/* Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-6">
+                <div className="text-base text-purple-400 mb-2">Total Income</div>
+                <div className="text-2xl font-bold text-emerald-400">₹{totalIncome.toFixed(2)}</div>
+              </div>
+              <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-6">
+                <div className="text-base text-purple-400 mb-2">Total Expenses</div>
+                <div className="text-2xl font-bold text-red-400">₹{totalExpense.toFixed(2)}</div>
+              </div>
+              <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-6">
+                <div className="text-base text-purple-400 mb-2">Balance</div>
+                <div className={`text-2xl font-bold ${totalIncome - totalExpense >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                  ₹{(totalIncome - totalExpense).toFixed(2)}
                 </div>
               </div>
+            </div>
 
-              <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-4">
-                <div className="text-sm text-zinc-400 mb-3">Recent Expenses</div>
-                <div className="text-sm">
-                  <div className="grid grid-cols-4 gap-2 text-zinc-400 mb-2">
-                    <div>Subject</div>
-                    <div>Category</div>
-                    <div>Date</div>
-                    <div className="text-right">Amount</div>
-                  </div>
-                  <div className="divide-y divide-zinc-800">
-                    {transactions.slice(0,5).map(tx => (
-                      <div key={tx._id} className="grid grid-cols-4 gap-2 py-2 items-center">
-                        <div className="truncate">{tx.description || tx.category}</div>
-                        <div>
-                          <span className="px-2 py-0.5 rounded-full text-xs bg-zinc-800 text-zinc-300">
-                            {tx.category}
-                          </span>
-                        </div>
-                        <div className="text-zinc-400 text-xs">{new Date(tx.date).toLocaleDateString()}</div>
-                        <div className={`text-right font-medium ${tx.type === 'income' ? 'text-emerald-400' : 'text-zinc-100'}`}>
-                          {tx.type === 'income' ? '+' : '-'}₹{tx.amount.toFixed(2)}
-                        </div>
+            {/* Transaction List */}
+            <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-6 mb-6">
+              <div className="text-lg font-semibold text-purple-300 mb-4">All Transactions</div>
+              <div className="text-base">
+                <div className="grid grid-cols-5 gap-4 text-purple-400 mb-2 font-medium">
+                  <div>Description</div>
+                  <div>Category</div>
+                  <div>Type</div>
+                  <div>Date</div>
+                  <div className="text-right">Amount</div>
+                </div>
+                <div className="divide-y divide-purple-800 max-h-96 overflow-y-auto">
+                  {transactions.map(tx => (
+                    <div key={tx._id} className="grid grid-cols-5 gap-4 py-3 items-center">
+                      <div className="truncate">{tx.description || tx.category}</div>
+                      <div>
+                        <span className="px-3 py-1 rounded-full text-sm bg-purple-800 text-purple-300">
+                          {tx.category}
+                        </span>
                       </div>
-                    ))}
-                    {transactions.length === 0 && (
-                      <div className="py-6 text-center text-zinc-500">No expenses yet</div>
-                    )}
-                  </div>
+                      <div>
+                        <span className={`px-3 py-1 rounded-full text-sm ${
+                          tx.type === 'income' ? 'bg-emerald-800 text-emerald-300' : 'bg-red-800 text-red-300'
+                        }`}>
+                          {tx.type}
+                        </span>
+                      </div>
+                      <div className="text-purple-400">{new Date(tx.date).toLocaleDateString()}</div>
+                      <div className={`text-right font-medium ${
+                        tx.type === 'income' ? 'text-emerald-400' : 'text-purple-100'
+                      }`}>
+                        {tx.type === 'income' ? '+' : '-'}₹{tx.amount.toFixed(2)}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
 
             {/* Quick Access */}
-            <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-4">
-              <div className="text-sm text-zinc-400 mb-4">Quick Access</div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <button className="bg-zinc-800 hover:bg-zinc-700 transition rounded-md py-3">+ New expense</button>
-                <button className="bg-zinc-800 hover:bg-zinc-700 transition rounded-md py-3">+ Add receipt</button>
-                <button className="bg-zinc-800 hover:bg-zinc-700 transition rounded-md py-3">+ Create report</button>
-                <button className="bg-zinc-800 hover:bg-zinc-700 transition rounded-md py-3">+ Create trip</button>
-              </div>
-            </div>
+              {/* <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-4">
+                <div className="text-base text-purple-400 mb-4">Quick Access</div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-base">
+                  <button className="bg-purple-800 hover:bg-purple-700 transition rounded-md py-3 flex items-center justify-center gap-2 hover:shadow-lg">
+                    <Plus className="w-4 h-4" />
+                    New expense
+                  </button>
+                  <button onClick={() => fileInputRef.current?.click()} disabled={uploading} className="bg-purple-800 hover:bg-purple-700 transition rounded-md py-3 disabled:opacity-50 flex items-center justify-center gap-2 hover:shadow-lg">
+                    {uploading ? 'Uploading...' : (
+                      <>
+                        <Upload className="w-4 h-4" />
+                        Add receipt
+                      </>
+                    )}
+                  </button>
+                  <button className="bg-purple-800 hover:bg-purple-700 transition rounded-md py-3 flex items-center justify-center gap-2 hover:shadow-lg">
+                    <FileText className="w-4 h-4" />
+                    Create report
+                  </button>
+                  <button className="bg-purple-800 hover:bg-purple-700 transition rounded-md py-3 flex items-center justify-center gap-2 hover:shadow-lg">
+                    <Plane className="w-4 h-4" />
+                    Create trip
+                  </button>
+                </div>
+                <input type="file" accept="image/*" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileChange} />
+              </div> */}
 
             {/* Daily Expenses */}
-            <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-4">
-              <div className="text-sm text-zinc-400 mb-4">Daily Expenses</div>
+            <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-4">
+              <div className="text-base text-purple-400 mb-4">Daily Expenses</div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-zinc-950 border border-zinc-800 rounded-md h-56 flex items-end p-4 gap-0.5">
+                <div className="bg-purple-950 border border-purple-800 rounded-md h-56 flex items-end p-4 gap-0.5">
                   {dailyData.map((d, i) => {
                     const maxTotal = Math.max(...dailyData.map(d => d.total), 1)
                     const height = (d.total / maxTotal) * 100
                     return <div key={d.day} className="flex-1 bg-emerald-600/60 rounded-sm" style={{ height: `${height}%` }} title={`Day ${d.day}: ₹${d.total.toFixed(2)}`} />
                   })}
                 </div>
-                <div className="bg-zinc-950 border border-zinc-800 rounded-md h-56 flex items-center justify-center">
+                <div className="bg-purple-950 border border-purple-800 rounded-md h-56 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-sm text-zinc-400 mb-2">Expense Categories</div>
+                    <div className="text-base text-purple-400 mb-2">Expense Categories</div>
                     <svg width="150" height="150" viewBox="0 0 150 150">
                       {(() => {
                         const categoryTotals = transactions

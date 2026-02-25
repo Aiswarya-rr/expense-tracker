@@ -4,13 +4,21 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const cookieParser = require('cookie-parser')
+const multer = require('multer')
 
 const { connectDB } = require('./lib/db')
 
 const authRoutes = require('./routes/auth')
+const auth = require('./middleware/auth')
 const txRoutes = require('./routes/transactions')
 const analyticsRoutes = require('./routes/analytics')
 const budgetRoutes = require('./routes/budgets')
+const chatbotRoutes = require('./routes/chatbot')
+
+const upload = multer({ dest: 'uploads/' })
+const sgMail = require('@sendgrid/mail')
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const app = express()
 
@@ -35,6 +43,32 @@ app.use('/api/auth', authRoutes)
 app.use('/api/transactions', txRoutes)
 app.use('/api/analytics', analyticsRoutes)
 app.use('/api/budgets', budgetRoutes)
+app.use('/api/chatbot', chatbotRoutes)
+
+app.post('/api/upload-receipt', auth, upload.single('receipt'), async (req, res) => {
+  try {
+    // simulate OCR
+    const parsed = {
+      amount: 100,
+      date: new Date().toISOString().split('T')[0],
+      category: 'food',
+      description: 'Receipt upload'
+    }
+    // create transaction
+    const Transaction = require('./models/Transaction')
+    const transaction = await Transaction.create({
+      userId: req.user.id,
+      type: 'expense',
+      category: parsed.category,
+      amount: parsed.amount,
+      date: parsed.date,
+      description: parsed.description
+    })
+    res.json(transaction)
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to process receipt' })
+  }
+})
 
 const PORT = process.env.PORT || 4000
 

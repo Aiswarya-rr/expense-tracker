@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const auth = require('../middleware/auth')
 const Budget = require('../models/Budget')
 const Transaction = require('../models/Transaction')
+const sgMail = require('@sendgrid/mail')
 
 const router = express.Router()
 
@@ -125,6 +126,29 @@ router.get('/category', auth, async (req, res) => {
     })
 
     results.sort((a, b) => b.spent - a.spent)
+
+    // Send email notification for overspent budgets
+    const overspentCategories = results.filter(c => c.status === 'overspent')
+    if (overspentCategories.length > 0 && req.user.email) {
+      const msg = {
+        to:process.env.RECEIVER_EMAIL,
+        from: process.env.FROM_EMAIL || 'noreply@expensio.com',
+        subject: 'Budget Exceeded Alert - Expensio',
+        text: `Your budget has been exceeded for the following categories: ${overspentCategories.map(c => `${c.category} (₹${(c.spent - c.budget).toFixed(2)} over)`).join(', ')}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #7c3aed;">Budget Exceeded Alert</h2>
+            <p>Your budget has been exceeded for the following categories:</p>
+            <ul>
+              ${overspentCategories.map(c => `<li><strong>${c.category}</strong>: ₹${(c.spent - c.budget).toFixed(2)} over budget</li>`).join('')}
+            </ul>
+            <p>Please review your expenses in the <a href="http://localhost:3003/analytics" style="color: #7c3aed;">Analytics</a> section.</p>
+            <p>Best regards,<br>Expensio Team</p>
+          </div>
+        `
+      }
+      sgMail.send(msg).catch(err => console.error('Email send error:', err))
+    }
 
     console.log('Category results for user', req.user.id, ':', results)
 
