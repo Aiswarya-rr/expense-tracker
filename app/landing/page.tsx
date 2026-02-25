@@ -61,7 +61,7 @@ export default function LandingPage() {
           </nav>
           <div className="flex items-center gap-3">
             <Link href="/auth/signup" className="hidden rounded-full border border-purple-700/60 px-4 py-2 text-sm text-purple-200 hover:bg-purple-800/40 md:block transition">
-              Download App
+              Download Appi
             </Link>
             <button className="md:hidden rounded-lg border border-purple-800 p-2 text-purple-300 hover:bg-purple-900/40">
               <Menu className="h-5 w-5" />
@@ -79,17 +79,16 @@ export default function LandingPage() {
               <span className="bg-gradient-to-b from-purple-300 to-purple-500 bg-clip-text text-transparent">Finance</span>
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-base text-purple-300 md:mt-6 md:text-lg">
-              Empowering your financial journey with innovative solutions.
+              Empowering yourr financial journey with innovative solutions.
             </p>
             <div className="mt-8 flex items-center justify-center gap-3">
-              <Link href="/auth/signup" className="inline-flex items-center gap-2 rounded-full bg-purple-700 px-6 py-3 text-white shadow-lg shadow-purple-900/40 transition hover:scale-105 hover:bg-purple-600">
-                Get Started
+              <Link href="/signup" className="inline-flex items-center gap-2 rounded-full bg-purple-700 px-6 py-3 text-white shadow-lg shadow-purple-900/40 transition hover:scale-105 hover:bg-purple-600">
+                Sign Up
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <a href="#download" className="inline-flex items-center gap-2 rounded-full border border-purple-700/60 px-6 py-3 text-purple-200 transition hover:bg-purple-900/40">
-                <Download className="h-4 w-4" />
-                Download App
-              </a>
+              <Link href="/login" className="inline-flex items-center gap-2 rounded-full border border-purple-700/60 px-6 py-3 text-purple-200 transition hover:bg-purple-900/40">
+                Login
+              </Link>
             </div>
           </div>
 

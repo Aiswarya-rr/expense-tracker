@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { User, Mail, Lock, Wallet } from "lucide-react"
 
 export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" })
@@ -38,78 +39,96 @@ export default function Signup() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+    <div className="min-h-screen bg-black text-purple-100 flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Glow background */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute left-1/2 -top-40 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-purple-700/20 blur-3xl" />
+        <div className="absolute right-1/2 bottom-[-120px] h-[500px] w-[500px] translate-x-1/2 rounded-full bg-purple-900/30 blur-3xl" />
+        <div className="absolute left-1/2 bottom-0 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-fuchsia-700/20 blur-3xl" />
+      </div>
+      <div className="max-w-md w-full bg-gradient-to-br from-purple-900/80 to-black shadow-xl rounded-2xl p-8 border border-purple-700/60 backdrop-blur-sm relative z-10">
+        <div className="text-center">
+          <Wallet className="mx-auto h-12 w-12 text-purple-400 mb-4" />
+          <h2 className="text-3xl font-bold text-white mb-2">
             Create your account
           </h2>
+          <p className="text-purple-300">Start tracking your expenses today</p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {message && (
-            <div className={`rounded-md p-4 ${isSuccess ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+            <div className={`rounded-md p-4 border ${isSuccess ? 'bg-green-900/50 border-green-500/50 text-green-300' : 'bg-red-900/50 border-red-500/50 text-red-300'}`}>
               {message}
             </div>
           )}
-          <div className="-space-y-px rounded-md shadow-sm">
-            <div>
-              <label htmlFor="name" className="sr-only">
-                Name
+          <div className="space-y-4">
+            <div className="relative">
+              <label htmlFor="name" className="block text-sm font-medium text-purple-300 mb-1">
+                Full Name
               </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                className="relative block w-full rounded-t-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="Full Name"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-              />
+              <div className="relative">
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  className="block w-full pl-10 pr-3 py-2 border border-purple-600/50 rounded-md bg-purple-900/30 text-white placeholder-purple-400 focus:ring-purple-500 focus:border-purple-500 sm:text-sm shadow-lg"
+                  placeholder="Enter your full name"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-purple-400" />
+              </div>
             </div>
-            <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
+            <div className="relative">
+              <label htmlFor="email" className="block text-sm font-medium text-purple-300 mb-1">
+                Email Address
               </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="relative block w-full border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="Email address"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-              />
+              <div className="relative">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  className="block w-full pl-10 pr-3 py-2 border border-purple-600/50 rounded-md bg-purple-900/30 text-white placeholder-purple-400 focus:ring-purple-500 focus:border-purple-500 sm:text-sm shadow-lg"
+                  placeholder="Enter your email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-purple-400" />
+              </div>
             </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
+            <div className="relative">
+              <label htmlFor="password" className="block text-sm font-medium text-purple-300 mb-1">
                 Password
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="relative block w-full rounded-b-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="Password"
-                value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  className="block w-full pl-10 pr-3 py-2 border border-purple-600/50 rounded-md bg-purple-900/30 text-white placeholder-purple-400 focus:ring-purple-500 focus:border-purple-500 sm:text-sm shadow-lg"
+                  placeholder="Create a password"
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-purple-400" />
+              </div>
             </div>
           </div>
 
           <div>
             <button
               type="submit"
-              className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150 ease-in-out"
             >
+              <Wallet className="mr-2 h-5 w-5" />
               Sign up
             </button>
           </div>
 
           <div className="text-center">
-            <Link href="/auth/signin" className="text-indigo-600 hover:text-indigo-500">
+            <Link href="/auth/signin" className="text-purple-400 hover:text-purple-300 font-medium">
               Already have an account? Sign in
             </Link>
           </div>
