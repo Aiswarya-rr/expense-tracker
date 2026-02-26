@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import TransactionForm from "../../components/TransactionForm"
 import Summary from "../../components/Summary"
-import { Plus, Upload, FileText, Plane, TrendingUp, TrendingDown, DollarSign, Home as HomeIcon, CreditCard, BarChart3, PiggyBank, Settings, LogOut, MessageSquare } from "lucide-react"
+import { Plus, Upload, FileText, Plane, TrendingUp, TrendingDown, DollarSign, Home as HomeIcon, CreditCard, BarChart3, PiggyBank, Settings, LogOut, MessageSquare, Calendar } from "lucide-react"
 
 interface Transaction {
   _id: string
@@ -192,18 +192,18 @@ export default function Home() {
               <MessageSquare className="w-5 h-5" />
               AI Assistant
             </Link>
-            <a href="#" className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800">
-              <Plane className="w-5 h-5" />
-              Trips
-            </a>
-            <a href="#" className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800">
+            <Link href="/bills" className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800">
+              <Calendar className="w-5 h-5" />
+              Bills
+            </Link>
+            <Link href="#" className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800">
               <FileText className="w-5 h-5" />
               Approvals
-            </a>
-            <a href="#" className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800">
+            </Link>
+            <Link href="#" className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800">
               <Settings className="w-5 h-5" />
               Settings
-            </a>
+            </Link>
             <button
               onClick={handleLogout}
               className="w-full text-left flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800 text-red-400"

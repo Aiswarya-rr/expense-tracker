@@ -14,6 +14,7 @@ const txRoutes = require('./routes/transactions')
 const analyticsRoutes = require('./routes/analytics')
 const budgetRoutes = require('./routes/budgets')
 const chatbotRoutes = require('./routes/chatbot')
+const billRoutes = require('./routes/bills')
 
 const upload = multer({ dest: 'uploads/' })
 const sgMail = require('@sendgrid/mail')
@@ -44,6 +45,7 @@ app.use('/api/transactions', txRoutes)
 app.use('/api/analytics', analyticsRoutes)
 app.use('/api/budgets', budgetRoutes)
 app.use('/api/chatbot', chatbotRoutes)
+app.use('/api/bills', billRoutes)
 
 app.post('/api/upload-receipt', auth, upload.single('receipt'), async (req, res) => {
   try {

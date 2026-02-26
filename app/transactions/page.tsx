@@ -20,6 +20,8 @@ export default function TransactionsPage() {
   const [loading, setLoading] = useState(false)
   const [dailyData, setDailyData] = useState<{ day: number; total: number }[]>([])
   const [uploading, setUploading] = useState(false)
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -239,14 +241,43 @@ export default function TransactionsPage() {
             <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-4">
               <div className="text-base text-purple-400 mb-4">Daily Expenses</div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-purple-950 border border-purple-800 rounded-md h-56 flex items-end p-4 gap-0.5">
-                  {dailyData.map((d, i) => {
-                    const maxTotal = Math.max(...dailyData.map(d => d.total), 1)
-                    const height = (d.total / maxTotal) * 100
-                    return <div key={d.day} className="flex-1 bg-emerald-600/60 rounded-sm" style={{ height: `${height}%` }} title={`Day ${d.day}: ₹${d.total.toFixed(2)}`} />
-                  })}
+                <div className="bg-purple-950 border border-purple-800 rounded-md p-4">
+                  <svg width="100%" height="200" viewBox="0 0 300 200">
+                    {/* Y Axis */}
+                    <line x1="30" y1="10" x2="30" y2="170" stroke="#a855f7" strokeWidth="1" />
+                    {/* Y Axis labels */}
+                    {(() => {
+                      const maxTotal = Math.max(...dailyData.map(d => d.total), 1)
+                      return [0, 1, 2, 3, 4].map(i => {
+                        const value = (maxTotal / 4) * i
+                        const y = 170 - (i * 160 / 4)
+                        return (
+                          <g key={i}>
+                            <line x1="25" y1={y} x2="30" y2={y} stroke="#a855f7" strokeWidth="1" />
+                            <text x="20" y={y + 4} textAnchor="end" fill="#a855f7" fontSize="10">{value.toFixed(0)}</text>
+                          </g>
+                        )
+                      })
+                    })()}
+                    {/* Bars */}
+                    {dailyData.map((d, i) => {
+                      const maxTotal = Math.max(...dailyData.map(d => d.total), 1)
+                      const height = (d.total / maxTotal) * 160
+                      const x = 40 + i * 50
+                      const y = 170 - height
+                      return (
+                        <g key={d.day}>
+                          <rect x={x} y={y} width="30" height={height} fill="#10b981" opacity="0.6" rx="2" />
+                          {/* X axis label */}
+                          <text x={x + 15} y="185" textAnchor="middle" fill="#a855f7" fontSize="10">{d.day}</text>
+                        </g>
+                      )
+                    })}
+                    {/* X Axis */}
+                    <line x1="30" y1="170" x2="280" y2="170" stroke="#a855f7" strokeWidth="1" />
+                  </svg>
                 </div>
-                <div className="bg-purple-950 border border-purple-800 rounded-md h-56 flex items-center justify-center">
+                <div className="bg-purple-950 border border-purple-800 rounded-md h-56 flex flex-col items-center justify-center">
                   <div className="text-center">
                     <div className="text-base text-purple-400 mb-2">Expense Categories</div>
                     <svg width="150" height="150" viewBox="0 0 150 150">
@@ -289,9 +320,98 @@ export default function TransactionsPage() {
                         })
                       })()}
                     </svg>
+                    {/* Legend */}
+                    <div className="mt-2 text-xs text-purple-300">
+                      {(() => {
+                        const categoryTotals = transactions
+                          .filter(t => t.type === 'expense')
+                          .reduce((acc, t) => {
+                            const existing = acc.find(c => c.category === t.category)
+                            if (existing) existing.amount += t.amount
+                            else acc.push({ category: t.category, amount: t.amount })
+                            return acc
+                          }, [] as { category: string; amount: number }[])
+                        return categoryTotals.map((c, i) => (
+                          <div key={i} className="flex items-center gap-1">
+                            <div className="w-3 h-3 rounded" style={{ backgroundColor: `hsl(${i * 60 + 120}, 70%, 50%)` }}></div>
+                            <span>{c.category}</span>
+                          </div>
+                        ))
+                      })()}
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Calendar View */}
+          <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-4 mt-6">
+            <div className="text-base text-purple-400 mb-4">Calendar View</div>
+            {/* Month navigation */}
+            <div className="flex justify-between items-center mb-4">
+              <button 
+                onClick={() => {
+                  if (currentMonth === 0) {
+                    setCurrentMonth(11)
+                    setCurrentYear(currentYear - 1)
+                  } else {
+                    setCurrentMonth(currentMonth - 1)
+                  }
+                }} 
+                className="text-purple-400 hover:text-purple-300 transition"
+              >
+                ← Prev
+              </button>
+              <div className="text-purple-200 font-medium">
+                {new Date(currentYear, currentMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+              </div>
+              <button 
+                onClick={() => {
+                  if (currentMonth === 11) {
+                    setCurrentMonth(0)
+                    setCurrentYear(currentYear + 1)
+                  } else {
+                    setCurrentMonth(currentMonth + 1)
+                  }
+                }} 
+                className="text-purple-400 hover:text-purple-300 transition"
+              >
+                Next →
+              </button>
+            </div>
+            {/* Calendar grid */}
+            <div className="grid grid-cols-7 gap-1 text-center">
+              {/* Days of week */}
+              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                <div key={day} className="text-purple-500 text-sm font-medium py-2">{day}</div>
+              ))}
+              {/* Empty cells for start of month */}
+              {(() => {
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay()
+                return Array.from({ length: firstDay }, (_, i) => <div key={`empty-${i}`} className="py-2"></div>)
+              })()}
+              {/* Days */}
+              {(() => {
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
+                return Array.from({ length: daysInMonth }, (_, i) => {
+                  const day = i + 1
+                  const hasExpenses = transactions.some(t => {
+                    const tDate = new Date(t.date)
+                    return tDate.getFullYear() === currentYear && tDate.getMonth() === currentMonth && tDate.getDate() === day
+                  })
+                  return (
+                    <div 
+                      key={day} 
+                      className={`py-2 px-1 rounded-md transition ${hasExpenses ? 'bg-purple-600 text-white shadow-lg' : 'text-purple-300 hover:bg-purple-800/50'}`}
+                      title={hasExpenses ? `Expenses on ${day}` : `No expenses on ${day}`}
+                    >
+                      {day}
+                      {hasExpenses && <div className="w-1 h-1 bg-fuchsia-400 rounded-full mx-auto mt-1"></div>}
+                    </div>
+                  )
+                })
+              })()}
             </div>
           </div>
         </main>

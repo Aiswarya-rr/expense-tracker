@@ -50,14 +50,14 @@ export default function RootPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
           <Link href="/" className="flex items-center gap-2">
             <div className="text-xl font-extrabold">
-              <span className="text-white">Purple</span><span className="text-purple-400">Bank</span>
+              <span className="text-white">Expense</span><span className="text-purple-400">Tracker</span>
             </div>
           </Link>
           <nav className="hidden gap-8 md:flex text-purple-200/80">
-            <a href="#features" className="hover:text-white transition">Home</a>
-            <a href="#about" className="hover:text-white transition">About</a>
-            <a href="#services" className="hover:text-white transition">Services</a>
-            <a href="#contact" className="hover:text-white transition">Contact Us</a>
+            <Link href="/home" className="hover:text-white transition">Home</Link>
+            <Link href="/how-to-use" className="hover:text-white transition">About</Link>
+            <Link href="/chatbot" className="hover:text-white transition">Chatbot</Link>
+            <Link href="/contact" className="hover:text-white transition">Contact Us</Link>
           </nav>
           <div className="flex items-center gap-3">
             <Link href="/auth/signup" className="hidden rounded-full border border-purple-700/60 px-4 py-2 text-sm text-purple-200 hover:bg-purple-800/40 md:block transition">
@@ -276,6 +276,84 @@ export default function RootPage() {
         </section>
 
         {/* Footer */}
+        <section className="relative py-24 bg-gradient-to-b from-black to-purple-950/20 border-t border-purple-900/40 overflow-hidden">
+          {/* subtle vignette */}
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_60%_at_70%_40%,rgba(126,34,206,0.25),transparent_60%)]" />
+          <div className="relative mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-10 items-center">
+            {/* Left headline */}
+            <div>
+              <h2 className="text-4xl md:text-6xl font-extrabold leading-[1.1] tracking-tight text-white">
+                <span className="block animate-highlight-1">Unlock a world of</span>
+                <span className="block animate-highlight-2">convenience and</span>
+                <span className="block animate-highlight-3">exclusive benefits</span>
+                <span className="block animate-highlight-4">with your very own</span>
+                <span className="block animate-highlight-5">Card.</span>
+              </h2>
+              <p className="mt-6 text-purple-300/90 max-w-lg">Your smart, secure and stylish way to manage payments, rewards and everyday spending.</p>
+            </div>
+
+            {/* Right tilted card */}
+            <div className="flex justify-center md:justify-end">
+              <div
+                className="relative w-[320px] h-[200px] md:w-[380px] md:h-[230px] rounded-3xl p-6 shadow-2xl border border-white/10 animate-card-rotate"
+                style={{
+                  background:
+                    'linear-gradient(145deg, rgba(99,102,241,1) 0%, rgba(168,85,247,1) 45%, rgba(236,72,153,1) 100%)'
+                }}
+              >
+                {/* inner lighting */}
+                <div className="pointer-events-none absolute -inset-1 rounded-[24px] bg-white/10 blur-2xl" />
+
+                {/* card content */}
+                <div className="relative z-10 text-white/90">
+                  <div className="text-xs tracking-widest opacity-90">1478 2258 4598 9874</div>
+                  <div className="mt-8 grid grid-cols-2 text-[10px]">
+                    <div className="opacity-80">
+                      <div>Card Holder</div>
+                      <div className="mt-1 text-sm font-semibold text-white">Elor Minton</div>
+                    </div>
+                    <div className="text-right opacity-90">
+                      <div>12/24</div>
+                    </div>
+                  </div>
+                  <div className="mt-6 flex items-center justify-between text-xs">
+                    <span className="opacity-80">Card Name</span>
+                    {/* logo circles */}
+                    <span className="relative inline-flex items-center">
+                      <span className="h-4 w-4 rounded-full bg-yellow-400 mix-blend-screen" />
+                      <span className="-ml-2 h-4 w-4 rounded-full bg-orange-500 mix-blend-screen" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Custom CSS for animations */}
+          <style jsx>{`
+            @keyframes card-rotate {
+              0% { transform: rotate(0deg); }
+              20% { transform: rotate(18deg); }
+              40% { transform: rotate(36deg); }
+              60% { transform: rotate(54deg); }
+              80% { transform: rotate(72deg); }
+              100% { transform: rotate(90deg); }
+            }
+            .animate-card-rotate {
+              animation: card-rotate 6s ease-in-out infinite alternate;
+            }
+            @keyframes highlight {
+              0%, 80% { color: white; }
+              20%, 100% { color: #a855f7; }
+            }
+            .animate-highlight-1 { animation: highlight 6s ease-in-out infinite; animation-delay: 0s; }
+            .animate-highlight-2 { animation: highlight 6s ease-in-out infinite; animation-delay: 1.2s; }
+            .animate-highlight-3 { animation: highlight 6s ease-in-out infinite; animation-delay: 2.4s; }
+            .animate-highlight-4 { animation: highlight 6s ease-in-out infinite; animation-delay: 3.6s; }
+            .animate-highlight-5 { animation: highlight 6s ease-in-out infinite; animation-delay: 4.8s; }
+          `}</style>
+        </section>
+
         <footer className="mt-24 border-t border-purple-900/40 py-10 text-center text-sm text-purple-300/80">
           © {new Date().getFullYear()} PurpleBank. All rights reserved.
         </footer>
