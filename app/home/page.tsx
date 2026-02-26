@@ -168,8 +168,8 @@ export default function Home() {
         {/* Sidebar */}
         <aside className="w-64 bg-gradient-to-br from-purple-900 to-purple-950 border-r border-purple-800 min-h-screen sticky top-0 hidden md:block">
           <div className="p-6 flex flex-col items-center gap-3">
-            <div className="h-16 w-16 rounded-full bg-purple-800" />
-            <div className="text-base text-purple-400">{user.name}</div>
+            
+            <div className="text-base text-white font-semibold">{user.name}</div>
           </div>
           <nav className="px-3 space-y-1 text-base">
             <Link href="/home" className="flex items-center gap-3 px-4 py-2 rounded-md bg-purple-600/10 text-purple-400">
@@ -200,10 +200,6 @@ export default function Home() {
               <FileText className="w-5 h-5" />
               Approvals
             </Link>
-            <Link href="#" className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800">
-              <Settings className="w-5 h-5" />
-              Settings
-            </Link>
             <button
               onClick={handleLogout}
               className="w-full text-left flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800 text-red-400"
@@ -212,7 +208,7 @@ export default function Home() {
               Logout
             </button>
           </nav>
-          <div className="mt-10 px-4 text-base text-purple-500">EXPENSIO</div>
+         
         </aside>
 
         {/* Main */}

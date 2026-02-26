@@ -49,7 +49,7 @@ export default function RootPage() {
       <header className="relative z-10">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
           <Link href="/" className="flex items-center gap-2">
-            <div className="text-xl font-extrabold">
+            <div className="text-2xl font-extrabold">
               <span className="text-white">Expense</span><span className="text-purple-400">Tracker</span>
             </div>
           </Link>
@@ -74,11 +74,11 @@ export default function RootPage() {
       <main className="relative z-10">
         <section className="mx-auto max-w-7xl px-6 pt-10 md:pt-20">
           <div className="text-center">
-            <h1 className="mx-auto max-w-4xl text-5xl font-extrabold leading-[1.1] tracking-tight text-white md:text-7xl">
+            <h1 className="mx-auto max-w-5xl text-5xl font-extrabold leading-[1.1] tracking-tight text-white md:text-7xl">
               <span className="block">Level Up Yourr</span>
               <span className="bg-gradient-to-b from-purple-300 to-purple-500 bg-clip-text text-transparent">Finance</span>
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-base text-purple-300 md:mt-6 md:text-lg">
+            <p className="mx-auto mt-4 max-w-3xl text-base text-purple-300 md:mt-6 md:text-lg">
               Empowering youry financial journey with innovative solutions.
             </p>
             <div className="mt-8 flex items-center justify-center gap-3">
@@ -150,8 +150,8 @@ export default function RootPage() {
         <section className="py-20 bg-gradient-to-b from-black to-purple-950/20">
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-purple-300 mb-4">Experience the Future of Finance</h2>
-              <p className="text-lg text-purple-400">Watch our features come to life in stunning 3D animation</p>
+              <h2 className="text-7xl font-bold text-purple-300 mb-4">Experience the Future of Finance</h2>
+              <p className="text-3xl text-purple-400">Watch our features come to life in stunning 3D animation</p>
             </div>
 
             {/* Phone mock + feature text */}
@@ -159,8 +159,8 @@ export default function RootPage() {
               {/* Left side text */}
               <div className="hidden lg:block w-80 text-left">
                 <div className="transition-all duration-1000 opacity-100">
-                  <h3 className="text-3xl font-bold text-purple-300 mb-4">{features[currentFeature].title}</h3>
-                  <p className="text-lg text-purple-400 mb-6">{features[currentFeature].desc}</p>
+                  <h3 className="text-4xl font-bold text-purple-300 mb-4">{features[currentFeature].title}</h3>
+                  <p className="text-2xl text-purple-400 mb-6">{features[currentFeature].desc}</p>
                   <div className="space-y-3">
                     {features[currentFeature].bullets.map((bullet, index) => (
                       <div
@@ -180,11 +180,11 @@ export default function RootPage() {
 
               {/* Phone frame */}
               <div className="relative" style={{ perspective: '1000px' }}>
-                <div className="relative h-[520px] w-[270px] rounded-[42px] border border-purple-700/60 bg-gradient-to-b from-zinc-900 to-black p-4 shadow-2xl shadow-purple-900/40">
+                <div className="relative h-[620px] w-[270px] rounded-[42px] border border-purple-700/60 bg-gradient-to-b from-zinc-900 to-black p-4 shadow-2xl shadow-purple-900/40">
                   {/* Dynamic island */}
                   <div className="mx-auto mb-3 h-6 w-28 rounded-full bg-black/80" />
                   {/* Screen with 3D card */}
-                  <div className="relative h-[450px] overflow-hidden rounded-3xl bg-gradient-to-b from-purple-950 to-black p-4">
+                  <div className="relative h-[550px] overflow-hidden rounded-3xl bg-gradient-to-b from-purple-950 to-black p-4">
                     <div className="text-sm text-purple-200/80">Total Balance</div>
                     <div className="mt-2 rounded-xl bg-gradient-to-br from-purple-700 to-fuchsia-700 p-4 text-white shadow-lg">
                       <div className="text-xs opacity-80">Send Money</div>

@@ -78,7 +78,7 @@ export default function LandingPage() {
               <span className="block">Level Up Your</span>
               <span className="bg-gradient-to-b from-purple-300 to-purple-500 bg-clip-text text-transparent">Finance</span>
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-base text-purple-300 md:mt-6 md:text-lg">
+            <p className="mx-auto mt-4 max-w-3 text-base text-purple-300 md:mt-6 md:text-lg">
               Empowering yourr financial journey with innovative solutions.
             </p>
             <div className="mt-8 flex items-center justify-center gap-3">
