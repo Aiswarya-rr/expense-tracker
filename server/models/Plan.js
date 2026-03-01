@@ -8,7 +8,7 @@ const PlanSchema = new mongoose.Schema(
     features: [{ type: String, trim: true }],
     isPopular: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true } 
 )
 
 module.exports = mongoose.models.Plan || mongoose.model('Plan', PlanSchema)

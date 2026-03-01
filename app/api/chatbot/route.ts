@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     })
 
     const data = await res.json()
-    return Response.json(data)
+    return Response.json(data) 
   } catch (error) {
     console.error('Chatbot proxy error:', error)
     return Response.json({ error: 'Failed to communicate with AI service' }, { status: 500 })
