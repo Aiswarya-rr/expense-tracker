@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { Plus, Upload, FileText, Plane, Home, CreditCard, BarChart3, PiggyBank, Download } from "lucide-react"
 import * as XLSX from 'xlsx'
+import Sidebar from "../../components/Sidebar"
 
 interface Transaction {
   _id: string
@@ -24,6 +25,12 @@ export default function TransactionsPage() {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
+    window.location.href = "/auth/signup"
+  }
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -141,27 +148,7 @@ export default function TransactionsPage() {
     <div className="min-h-screen bg-black text-purple-200">
       <div className="flex">
         {/* Sidebar */}
-        <div className="w-64 bg-gradient-to-br from-purple-900 to-purple-950 min-h-screen border-r border-purple-800 p-6">
-          <div className="text-lg font-bold text-purple-300 mb-8">Expense Tracker</div>
-          <nav className="space-y-4">
-            <Link href="/" className="flex items-center gap-3 text-base text-purple-300 hover:text-white transition">
-              <Home className="w-5 h-5" />
-              Home
-            </Link>
-            <Link href="/transactions" className="flex items-center gap-3 text-base text-white font-medium">
-              <CreditCard className="w-5 h-5" />
-              Transactions
-            </Link>
-            <Link href="/analytics" className="flex items-center gap-3 text-base text-purple-300 hover:text-white transition">
-              <BarChart3 className="w-5 h-5" />
-              Analytics
-            </Link>
-            <Link href="/budgets" className="flex items-center gap-3 text-base text-purple-300 hover:text-white transition">
-              <PiggyBank className="w-5 h-5" />
-              Budgets
-            </Link>
-          </nav>
-        </div>
+        <Sidebar user={user} onLogout={handleLogout} />
 
         {/* Main Content */}
         <main className="flex-1 p-8">

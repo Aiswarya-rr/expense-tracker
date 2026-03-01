@@ -5,6 +5,7 @@ import Link from "next/link"
 import TransactionForm from "../../components/TransactionForm"
 import Summary from "../../components/Summary"
 import { Plus, Upload, FileText, Plane, TrendingUp, TrendingDown, DollarSign, Home as HomeIcon, CreditCard, BarChart3, PiggyBank, Settings, LogOut, MessageSquare, Calendar, Crown } from "lucide-react"
+import Sidebar from "@/components/Sidebar"
 
 interface Transaction {
   _id: string
@@ -166,7 +167,7 @@ export default function Home() {
     <div className="min-h-screen bg-black text-zinc-200">
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-gradient-to-br from-purple-900 to-purple-950 border-r border-purple-800 min-h-screen sticky top-0 hidden md:block">
+        {/* <aside className="w-64 bg-gradient-to-br from-purple-900 to-purple-950 border-r border-purple-800 min-h-screen sticky top-0 hidden md:block">
           <div className="p-6 flex flex-col items-center gap-3">
             
             <div className="text-base text-white font-semibold">{user.name}</div>
@@ -213,8 +214,8 @@ export default function Home() {
             </button>
           </nav>
          
-        </aside>
-
+        </aside> */}
+        <Sidebar user={user} onLogout={handleLogout} />
         {/* Main */}
         <main className="flex-1 p-6 md:p-10">
           <div className="max-w-6xl mx-auto space-y-6">

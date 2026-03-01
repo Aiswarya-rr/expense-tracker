@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { Plus, Upload, FileText, Plane, Home as HomeIcon, CreditCard, BarChart3, PiggyBank, Settings, LogOut, MessageSquare, Send, User, Bot } from "lucide-react"
+import Sidebar from "@/components/Sidebar"
 
 interface Message {
   role: 'user' | 'assistant'
@@ -17,6 +18,12 @@ export default function ChatbotPage() {
   const [loading, setLoading] = useState(false)
   const [user, setUser] = useState<any>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
+    window.location.href = "/auth/signup"
+  }
 
   const suggestedQuestions = [
     "What is my total expenses this month?",
@@ -94,7 +101,7 @@ export default function ChatbotPage() {
       </div>
       <div className="flex relative z-10">
         {/* Sidebar */}
-        <aside className="w-64 bg-gradient-to-br from-purple-900/80 to-purple-950/80 border-r border-purple-800/60 min-h-screen sticky top-0 hidden md:block backdrop-blur-sm">
+        {/* <aside className="w-64 bg-gradient-to-br from-purple-900/80 to-purple-950/80 border-r border-purple-800/60 min-h-screen sticky top-0 hidden md:block backdrop-blur-sm">
           <div className="p-6 flex flex-col items-center gap-3">
             <div className="h-16 w-16 rounded-full bg-gradient-to-br from-purple-600 to-fuchsia-600 shadow-lg shadow-purple-900/40" />
             <div className="text-base text-purple-300 font-medium">{user.name}</div>
@@ -141,8 +148,8 @@ export default function ChatbotPage() {
             </button>
           </nav>
           <div className="mt-10 px-4 text-base text-purple-400 font-semibold">EXPENSIO</div>
-        </aside>
-
+        </aside> */}
+        <Sidebar user={user} onLogout={handleLogout} />
         {/* Main Content */}
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">

@@ -45,3 +45,61 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Light mode overrides */
+.light {
+  background-color: white !important;
+  color: #581c87 !important;
+}
+
+.light .bg-black {
+  background-color: white !important;
+}
+
+.light .bg-purple-900 {
+  background-color: #faf5ff !important;
+}
+
+.light .bg-purple-950 {
+  background-color: #f3e8ff !important;
+}
+
+.light .bg-purple-800 {
+  background-color: #e9d5ff !important;
+}
+
+.light .bg-gradient-to-br {
+  background: linear-gradient(to bottom right, #faf5ff, #f3e8ff) !important;
+}
+
+.light .border-purple-800 {
+  border-color: #c084fc !important;
+}
+
+.light .text-purple-200 {
+  color: #7c3aed !important;
+}
+
+.light .text-purple-300 {
+  color: #a855f7 !important;
+}
+
+.light .text-purple-400 {
+  color: #c084fc !important;
+}
+
+.light .text-purple-500 {
+  color: #d946ef !important;
+}
+
+.light .text-emerald-400 {
+  color: #16a34a !important;
+}
+
+.light .text-red-400 {
+  color: #dc2626 !important;
+}
+
+.light .divide-purple-800 > * + * {
+  border-color: #c084fc !important;
+}

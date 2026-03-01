@@ -1,5 +1,6 @@
 "use client"
 
+import Sidebar from "@/components/Sidebar"
 import { useEffect, useState } from "react"
 
 interface MonthlyData {
@@ -22,6 +23,12 @@ export default function Analytics() {
   const [categoryData, setCategoryData] = useState<CategoryData[]>([])
   const [loading, setLoading] = useState(false)
   const [user, setUser] = useState<any>(null)
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
+    window.location.href = "/auth/signup"
+  }
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -68,7 +75,7 @@ export default function Analytics() {
     <div className="min-h-screen bg-black text-purple-200">
       <div className="flex">
         {/* Sidebar */}
-        <div className="w-64 bg-gradient-to-br from-purple-900 to-purple-950 min-h-screen border-r border-purple-800 p-6">
+        {/* <div className="w-64 bg-gradient-to-br from-purple-900 to-purple-950 min-h-screen border-r border-purple-800 p-6">
           <div className="text-lg font-bold text-purple-300 mb-8">Expense Tracker</div>
           <nav className="space-y-4">
             <a href="/" className="flex items-center gap-3 text-base text-purple-300 hover:text-white transition">
@@ -96,8 +103,10 @@ export default function Analytics() {
               Budgets
             </a>
           </nav>
-        </div>
+        </div> */}
+       
 
+       <Sidebar user={user} onLogout={handleLogout} />
         {/* Main Content */}
         <main className="flex-1 p-8">
           <div className="max-w-7xl mx-auto">
