@@ -27,9 +27,9 @@ app.use(cors({
   origin: function (origin, callback) {
     // allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (['http://localhost:3000', 'http://localhost:3003'].includes(origin)) {
-      return callback(null, true);
-    }
+   if (['http://localhost:3000', 'http://localhost:3003', 'https://expense-tracker-beige-five-86.vercel.app'].includes(origin)) {
+  return callback(null, true);
+}
     return callback(new Error('Not allowed by CORS'));
   }
 }))
