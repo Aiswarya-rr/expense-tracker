@@ -21,7 +21,10 @@ export default function Sidebar({ user, onLogout }: SidebarProps) {
   return (
     <aside className="w-64 bg-gradient-to-br from-purple-900 to-purple-950 border-r border-purple-800 min-h-screen sticky top-0 hidden md:block">
       <div className="p-6 flex flex-col items-center gap-3">
-        <div className="text-base text-white font-semibold">{user?.name || "Expense Tracker"}</div>
+        <div className="text-2xl text-white font-semibold">{user?.name || "Expense Tracker"}</div>
+        {user?.isPremium && <div className="text-xl flex items-center gap-2 font-semibold text-yellow-400">Pro User
+          <Crown className="w-5 h-5" />
+          </div>}
       </div>
       <nav className="px-3 space-y-1 text-base">
         <Link href="/home" className={getLinkClass("/home")}>

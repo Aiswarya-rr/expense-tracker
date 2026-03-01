@@ -232,7 +232,7 @@ export default function Home() {
             </div>
 
             {/* Quick Access */}
-            <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-4">
+            {/* <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-4">
               <div className="text-base text-purple-400 mb-3">Quick Access</div>
               <div className="text-base">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-base">
@@ -258,7 +258,7 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -295,9 +295,9 @@ export default function Home() {
 
             {/* Recent Expenses */}
             <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-4">
-              <div className="text-base text-purple-400 mb-3">Recent Expenses</div>
+              <div className="text-base text-white font-semibold mb-3">Recent Expenses</div>
               <div className="text-base">
-                <div className="grid grid-cols-4 gap-2 text-purple-400 mb-2">
+                <div className="grid grid-cols-4 gap-2 text-white font-semibold mb-2">
                   <div>Subject</div>
                   <div>Category</div>
                   <div>Date</div>
@@ -318,11 +318,11 @@ export default function Home() {
                       <div key={tx._id} className="grid grid-cols-4 gap-2 py-2 items-center">
                         <div className="truncate">{tx.description || tx.category}</div>
                         <div>
-                          <span className="px-2 py-0.5 rounded-full text-xs bg-purple-800 text-purple-300">
+                          <span className="px-2 py-0.5 rounded-full text-xl bg-purple-800 text-purple-300">
                             {tx.category}
                           </span>
                         </div>
-                        <div className="text-purple-400 text-xs">{new Date(tx.date).toLocaleDateString()}</div>
+                        <div className="text-white text-xl">{new Date(tx.date).toLocaleDateString()}</div>
                         <div className={`text-right font-medium ${tx.type === 'income' ? 'text-emerald-400' : 'text-purple-100'}`}>
                           {tx.type === 'income' ? '+' : '-'}₹{tx.amount.toFixed(2)}
                         </div>

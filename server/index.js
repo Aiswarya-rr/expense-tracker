@@ -16,6 +16,7 @@ const budgetRoutes = require('./routes/budgets')
 const chatbotRoutes = require('./routes/chatbot')
 const billRoutes = require('./routes/bills')
 const adminRoutes = require('./routes/admin')
+const plansRoutes = require('./routes/plans')
 
 const upload = multer({ dest: 'uploads/' })
 const sgMail = require('@sendgrid/mail')
@@ -49,6 +50,7 @@ app.use('/api/chatbot', chatbotRoutes)
 app.use('/api/bills', billRoutes)
 app.use('/api/subscription', require('./routes/subscription'))
 app.use('/api/admin', adminRoutes)
+app.use('/api/plans', plansRoutes)
 
 app.post('/api/upload-receipt', auth, upload.single('receipt'), async (req, res) => {
   try {
@@ -82,6 +84,7 @@ connectDB()
     // Insert sample data to create collections
     const User = require('./models/User')
     const Transaction = require('./models/Transaction')
+    const Plan = require('./models/Plan')
 
     try {
       // Create or update sample user with password '123'
@@ -108,6 +111,26 @@ connectDB()
           console.log('Sample transaction created')
         }
       }
+
+      // Create sample plans
+      await Plan.deleteMany()
+      await Plan.create([
+        {
+          name: 'Monthly',
+          price: 10,
+          duration: 'monthly',
+          features: ['Unlimited transactions', 'Advanced analytics & charts', 'Export to PDF/Excel', 'Priority support'],
+          isPopular: false
+        },
+        {
+          name: 'Yearly',
+          price: 100,
+          duration: 'yearly',
+          features: ['All monthly features', 'Early access to new features', 'Custom categories', 'Dedicated account manager'],
+          isPopular: true
+        }
+      ])
+      console.log('Sample plans created')
     } catch (err) {
       console.error('Error inserting sample data:', err)
     }

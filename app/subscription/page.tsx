@@ -13,6 +13,7 @@ declare global {
 export default function SubscriptionPage() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  const [plans, setPlans] = useState<any[]>([])
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -30,6 +31,12 @@ export default function SubscriptionPage() {
     script.src = 'https://checkout.razorpay.com/v1/checkout.js'
     script.async = true
     document.body.appendChild(script)
+
+    // Fetch plans
+    fetch('http://localhost:4000/api/plans')
+      .then(res => res.json())
+      .then(setPlans)
+      .catch(console.error)
   }, [])
 
   const handleSubscribe = async (plan: string) => {
@@ -248,76 +255,35 @@ export default function SubscriptionPage() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {/* Monthly Plan */}
-              <div className="bg-gradient-to-br from-purple-900/60 to-purple-950/60 rounded-2xl border border-purple-800/60 p-8 shadow-2xl backdrop-blur-sm">
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-purple-200 mb-2">Monthly</h3>
-                  <div className="text-4xl font-bold text-yellow-400 mb-2">₹10</div>
-                  <p className="text-purple-400">per month</p>
-                </div>
-                <ul className="space-y-3 mb-6">
-                  <li className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-400" />
-                    <span className="text-purple-300">Unlimited transactions</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-400" />
-                    <span className="text-purple-300">Advanced analytics & charts</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-400" />
-                    <span className="text-purple-300">Export to PDF/Excel</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-400" />
-                    <span className="text-purple-300">Priority support</span>
-                  </li>
-                </ul>
-                <button
-                  onClick={() => handleSubscribe('monthly')}
-                  disabled={loading}
-                  className="w-full bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white py-3 px-6 rounded-xl transition shadow-lg shadow-purple-900/40 disabled:opacity-50"
-                >
-                  {loading ? 'Processing...' : 'Subscribe Monthly'}
-                </button>
-              </div>
-
-              {/* Yearly Plan */}
-              <div className="bg-gradient-to-br from-yellow-900/60 to-orange-950/60 rounded-2xl border border-yellow-800/60 p-8 shadow-2xl backdrop-blur-sm relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-3 py-1 rounded-full text-sm font-semibold">
-                  Best Value
-                </div>
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-purple-200 mb-2">Yearly</h3>
-                  <div className="text-4xl font-bold text-yellow-400 mb-2">₹100</div>
-                  <p className="text-purple-400">per year (save 17%)</p>
-                </div>
-                <ul className="space-y-3 mb-6">
-                  <li className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-400" />
-                    <span className="text-purple-300">All monthly features</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-400" />
-                    <span className="text-purple-300">Early access to new features</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-400" />
-                    <span className="text-purple-300">Custom categories</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-400" />
-                    <span className="text-purple-300">Dedicated account manager</span>
-                  </li>
-                </ul>
-                <button
-                  onClick={() => handleSubscribe('yearly')}
-                  disabled={loading}
-                  className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-black py-3 px-6 rounded-xl transition shadow-lg shadow-yellow-900/40 disabled:opacity-50 font-semibold"
-                >
-                  {loading ? 'Processing...' : 'Subscribe Yearly'}
-                </button>
-              </div>
+              {plans.map(plan => {
+                const monthly = plans.find(p => p.duration === 'monthly')
+                const save = plan.duration === 'yearly' && monthly ? Math.round(((monthly.price * 12 - plan.price) / (monthly.price * 12)) * 100) : 0
+                return (
+                  <div key={plan._id} className={`bg-gradient-to-br ${plan.isPopular ? 'from-yellow-900/60 to-orange-950/60 border border-yellow-800/60' : 'from-purple-900/60 to-purple-950/60 border border-purple-800/60'} rounded-2xl p-8 shadow-2xl backdrop-blur-sm relative`}>
+                    {plan.isPopular && <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-3 py-1 rounded-full text-sm font-semibold">Best Value</div>}
+                    <div className="text-center mb-6">
+                      <h3 className="text-2xl font-bold text-purple-200 mb-2">{plan.name}</h3>
+                      <div className="text-4xl font-bold text-yellow-400 mb-2">₹{plan.price}</div>
+                      <p className="text-purple-400">{plan.duration === 'yearly' ? `per year (save ${save}%)` : 'per month'}</p>
+                    </div>
+                    <ul className="space-y-3 mb-6">
+                      {plan.features.map((feature: string, i: number) => (
+                        <li key={i} className="flex items-center gap-3">
+                          <Check className="w-5 h-5 text-green-400" />
+                          <span className="text-purple-300">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <button
+                      onClick={() => handleSubscribe(plan.duration)}
+                      disabled={loading}
+                      className={`w-full py-3 px-6 rounded-xl transition shadow-lg disabled:opacity-50 ${plan.isPopular ? 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-black font-semibold' : 'bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white'}`}
+                    >
+                      {loading ? 'Processing...' : `Subscribe ${plan.name}`}
+                    </button>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </main>

@@ -131,7 +131,7 @@ router.get('/category', auth, async (req, res) => {
     const overspentCategories = results.filter(c => c.status === 'overspent')
     if (overspentCategories.length > 0 && req.user.email) {
       const msg = {
-        to:process.env.RECEIVER_EMAIL,
+        to: process.env.RECEIVER_EMAIL,
         from: process.env.FROM_EMAIL || 'noreply@expensio.com',
         subject: 'Budget Exceeded Alert - Expensio',
         text: `Your budget has been exceeded for the following categories: ${overspentCategories.map(c => `${c.category} (₹${(c.spent - c.budget).toFixed(2)} over)`).join(', ')}`,

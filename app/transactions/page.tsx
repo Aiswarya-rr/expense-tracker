@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts'
 import Link from "next/link"
 import { Plus, Upload, FileText, Plane, Home, CreditCard, BarChart3, PiggyBank, Download } from "lucide-react"
 import * as XLSX from 'xlsx'
@@ -122,15 +123,15 @@ export default function TransactionsPage() {
     }
   }
 
-  const totalIncome = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0)
-  const totalExpense = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0)
+  const totalIncome = transactions.filter((t: Transaction) => t.type === 'income').reduce((s: number, t: Transaction) => s + t.amount, 0)
+  const totalExpense = transactions.filter((t: Transaction) => t.type === 'expense').reduce((s: number, t: Transaction) => s + t.amount, 0)
 
   if (!user) {
     return <div className="min-h-screen bg-black text-zinc-200 flex items-center justify-center">Loading...</div>
   }
 
   const exportToExcel = () => {
-    const data = transactions.map(t => ({
+    const data = transactions.map((t: Transaction) => ({
       Description: t.description || t.category,
       Category: t.category,
       Type: t.type,
@@ -154,9 +155,30 @@ export default function TransactionsPage() {
         <main className="flex-1 p-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-2xl font-bold text-purple-300 mb-6">Transactions</div>
-
+ <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-6 mt-6 mb-4">
+            <div className="text-lg font-semibold text-purple-300 mb-4">Export Data</div>
+            {user.isPremium ? (
+              <button
+                onClick={exportToExcel}
+                className="bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white px-6 py-3 rounded-xl transition shadow-lg shadow-purple-900/40 flex items-center gap-2"
+              >
+                <Download className="w-5 h-5" />
+                Export to Excel
+              </button>
+            ) : (
+              <div className="text-center">
+                <div className="text-purple-400 mb-4">Upgrade to Pro to export your transaction data to Excel</div>
+                <Link
+                  href="/subscription"
+                  className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-black px-6 py-3 rounded-xl transition shadow-lg shadow-yellow-900/40 inline-flex items-center gap-2 font-semibold"
+                >
+                  Upgrade to Pro
+                </Link>
+              </div>
+            )}
+          </div>
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-6">
                 <div className="text-base text-purple-400 mb-2">Total Income</div>
                 <div className="text-2xl font-bold text-emerald-400">₹{totalIncome.toFixed(2)}</div>
@@ -171,13 +193,13 @@ export default function TransactionsPage() {
                   ₹{(totalIncome - totalExpense).toFixed(2)}
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Transaction List */}
             <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-6 mb-6">
-              <div className="text-lg font-semibold text-purple-300 mb-4">All Transactions</div>
+              <div className="text-lg font-semibold text-white mb-4">All Transactions</div>
               <div className="text-base">
-                <div className="grid grid-cols-5 gap-4 text-purple-400 mb-2 font-medium">
+                <div className="grid grid-cols-5 gap-4 text-white font-semibold mb-2 font-medium">
                   <div>Description</div>
                   <div>Category</div>
                   <div>Type</div>
@@ -185,7 +207,7 @@ export default function TransactionsPage() {
                   <div className="text-right">Amount</div>
                 </div>
                 <div className="divide-y divide-purple-800 max-h-96 overflow-y-auto">
-                  {transactions.map(tx => (
+                  {transactions.map((tx: Transaction) => (
                     <div key={tx._id} className="grid grid-cols-5 gap-4 py-3 items-center">
                       <div className="truncate">{tx.description || tx.category}</div>
                       <div>
@@ -200,7 +222,7 @@ export default function TransactionsPage() {
                           {tx.type}
                         </span>
                       </div>
-                      <div className="text-purple-400">{new Date(tx.date).toLocaleDateString()}</div>
+                      <div className="text-white">{new Date(tx.date).toLocaleDateString()}</div>
                       <div className={`text-right font-medium ${
                         tx.type === 'income' ? 'text-emerald-400' : 'text-purple-100'
                       }`}>
@@ -242,106 +264,52 @@ export default function TransactionsPage() {
 
             {/* Daily Expenses */}
             <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-4">
-              <div className="text-base text-purple-400 mb-4">Daily Expenses</div>
+              <div className="text-2xl font-semibold text-white mb-4">Daily Expenses</div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-purple-950 border border-purple-800 rounded-md p-4">
-                  <svg width="100%" height="200" viewBox="0 0 300 200">
-                    {/* Y Axis */}
-                    <line x1="30" y1="10" x2="30" y2="170" stroke="#a855f7" strokeWidth="1" />
-                    {/* Y Axis labels */}
-                    {(() => {
-                      const maxTotal = Math.max(...dailyData.map(d => d.total), 1)
-                      return [0, 1, 2, 3, 4].map(i => {
-                        const value = (maxTotal / 4) * i
-                        const y = 170 - (i * 160 / 4)
-                        return (
-                          <g key={i}>
-                            <line x1="25" y1={y} x2="30" y2={y} stroke="#a855f7" strokeWidth="1" />
-                            <text x="20" y={y + 4} textAnchor="end" fill="#a855f7" fontSize="10">{value.toFixed(0)}</text>
-                          </g>
-                        )
-                      })
-                    })()}
-                    {/* Bars */}
-                    {dailyData.map((d, i) => {
-                      const maxTotal = Math.max(...dailyData.map(d => d.total), 1)
-                      const height = (d.total / maxTotal) * 160
-                      const x = 40 + i * 50
-                      const y = 170 - height
-                      return (
-                        <g key={d.day}>
-                          <rect x={x} y={y} width="30" height={height} fill="#10b981" opacity="0.6" rx="2" />
-                          {/* X axis label */}
-                          <text x={x + 15} y="185" textAnchor="middle" fill="#a855f7" fontSize="10">{d.day}</text>
-                        </g>
-                      )
-                    })}
-                    {/* X Axis */}
-                    <line x1="30" y1="170" x2="280" y2="170" stroke="#a855f7" strokeWidth="1" />
-                  </svg>
+                <div className="bg-white border border-gray-300 rounded-md p-4">
+                  <ResponsiveContainer width="100%" height={200}>
+                    <BarChart data={dailyData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+                      <XAxis dataKey="day" stroke="#666" />
+                      <YAxis stroke="#666" />
+                      <Tooltip formatter={(value) => [`₹${Number(value).toFixed(2)}`, 'Total']} />
+                      <Bar dataKey="total" fill="#a855f7" />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </div>
-                <div className="bg-purple-950 border border-purple-800 rounded-md h-56 flex flex-col items-center justify-center">
+                <div className="bg-white border border-gray-300 rounded-md h-56 flex flex-col items-center justify-center">
                   <div className="text-center">
-                    <div className="text-base text-purple-400 mb-2">Expense Categories</div>
-                    <svg width="150" height="150" viewBox="0 0 150 150">
-                      {(() => {
-                        const categoryTotals = transactions
-                          .filter(t => t.type === 'expense')
-                          .reduce((acc, t) => {
-                            const existing = acc.find(c => c.category === t.category)
-                            if (existing) existing.amount += t.amount
-                            else acc.push({ category: t.category, amount: t.amount })
-                            return acc
-                          }, [] as { category: string; amount: number }[])
-                        
-                        const total = categoryTotals.reduce((s, c) => s + c.amount, 0)
-                        let currentAngle = 0
-                        
-                        return categoryTotals.map((c, i) => {
-                          const angle = (c.amount / total) * 360
-                          const startAngle = currentAngle
-                          currentAngle += angle
-                          
-                          const x1 = 75 + 60 * Math.cos((startAngle * Math.PI) / 180)
-                          const y1 = 75 + 60 * Math.sin((startAngle * Math.PI) / 180)
-                          const x2 = 75 + 60 * Math.cos(((startAngle + angle) * Math.PI) / 180)
-                          const y2 = 75 + 60 * Math.sin(((startAngle + angle) * Math.PI) / 180)
-                          
-                          const largeArc = angle > 180 ? 1 : 0
-                          
-                          return (
-                            <path
-                              key={i}
-                              d={`M 75 75 L ${x1} ${y1} A 60 60 0 ${largeArc} 1 ${x2} ${y2} Z`}
-                              fill={`hsl(${i * 60 + 120}, 70%, 50%)`}
-                              stroke="white"
-                              strokeWidth="1"
+                    <div className="text-base text-gray-800 mb-2">Expense Categories</div>
+                    {(() => {
+                      const categoryTotals = transactions
+                        .filter((t: Transaction) => t.type === 'expense')
+                        .reduce((acc: {category: string, amount: number}[], t: Transaction) => {
+                          const existing = acc.find((c: {category: string, amount: number}) => c.category === t.category)
+                          if (existing) existing.amount += t.amount
+                          else acc.push({ category: t.category, amount: t.amount })
+                          return acc
+                        }, [] as { category: string; amount: number }[])
+                      return (
+                        <ResponsiveContainer width="100%" height={150}>
+                          <PieChart>
+                            <Pie
+                              data={categoryTotals}
+                              dataKey="amount"
+                              nameKey="category"
+                              cx="50%"
+                              cy="50%"
+                              outerRadius={50}
                             >
-                              <title>{c.category}: ₹{c.amount.toFixed(2)}</title>
-                            </path>
-                          )
-                        })
-                      })()}
-                    </svg>
-                    {/* Legend */}
-                    <div className="mt-2 text-xs text-purple-300">
-                      {(() => {
-                        const categoryTotals = transactions
-                          .filter(t => t.type === 'expense')
-                          .reduce((acc, t) => {
-                            const existing = acc.find(c => c.category === t.category)
-                            if (existing) existing.amount += t.amount
-                            else acc.push({ category: t.category, amount: t.amount })
-                            return acc
-                          }, [] as { category: string; amount: number }[])
-                        return categoryTotals.map((c, i) => (
-                          <div key={i} className="flex items-center gap-1">
-                            <div className="w-3 h-3 rounded" style={{ backgroundColor: `hsl(${i * 60 + 120}, 70%, 50%)` }}></div>
-                            <span>{c.category}</span>
-                          </div>
-                        ))
-                      })()}
-                    </div>
+                              {categoryTotals.map((entry: {category: string, amount: number}, index: number) => (
+                                <Cell key={`cell-${index}`} fill={`hsl(${index * 40 + 240}, 70%, 50%)`} />
+                              ))}
+                            </Pie>
+                            <Tooltip formatter={(value) => [`₹${Number(value).toFixed(2)}`, 'Amount']} />
+                            <Legend />
+                          </PieChart>
+                        </ResponsiveContainer>
+                      )
+                    })()}
                   </div>
                 </div>
               </div>
@@ -349,89 +317,79 @@ export default function TransactionsPage() {
           </div>
 
           {/* Calendar View */}
-          <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-4 mt-6">
-            <div className="text-base text-purple-400 mb-4">Calendar View</div>
-            {/* Month navigation */}
-            <div className="flex justify-between items-center mb-4">
-              <button 
-                onClick={() => {
-                  if (currentMonth === 0) {
-                    setCurrentMonth(11)
-                    setCurrentYear(currentYear - 1)
-                  } else {
-                    setCurrentMonth(currentMonth - 1)
-                  }
-                }} 
-                className="text-purple-400 hover:text-purple-300 transition"
-              >
-                ← Prev
-              </button>
-              <div className="text-purple-200 font-medium">
-                {new Date(currentYear, currentMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+          {user.isPremium ? (
+            <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-4 mt-6">
+              <div className="text-xl font-semibold text-white mb-4">Calendar View</div>
+              {/* Month navigation */}
+              <div className="flex justify-between items-center mb-4">
+                <button 
+                  onClick={() => {
+                    if (currentMonth === 0) {
+                      setCurrentMonth(11)
+                      setCurrentYear(currentYear - 1)
+                    } else {
+                      setCurrentMonth(currentMonth - 1)
+                    }
+                  }} 
+                  className="text-purple-400 hover:text-purple-300 transition"
+                >
+                  ← Prev
+                </button>
+                <div className="text-purple-200 font-medium">
+                  {new Date(currentYear, currentMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                </div>
+                <button 
+                  onClick={() => {
+                    if (currentMonth === 11) {
+                      setCurrentMonth(0)
+                      setCurrentYear(currentYear + 1)
+                    } else {
+                      setCurrentMonth(currentMonth + 1)
+                    }
+                  }} 
+                  className="text-purple-400 hover:text-purple-300 transition"
+                >
+                  Next →
+                </button>
               </div>
-              <button 
-                onClick={() => {
-                  if (currentMonth === 11) {
-                    setCurrentMonth(0)
-                    setCurrentYear(currentYear + 1)
-                  } else {
-                    setCurrentMonth(currentMonth + 1)
-                  }
-                }} 
-                className="text-purple-400 hover:text-purple-300 transition"
-              >
-                Next →
-              </button>
-            </div>
-            {/* Calendar grid */}
-            <div className="grid grid-cols-7 gap-1 text-center">
-              {/* Days of week */}
-              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                <div key={day} className="text-purple-500 text-sm font-medium py-2">{day}</div>
-              ))}
-              {/* Empty cells for start of month */}
-              {(() => {
-                const firstDay = new Date(currentYear, currentMonth, 1).getDay()
-                return Array.from({ length: firstDay }, (_, i) => <div key={`empty-${i}`} className="py-2"></div>)
-              })()}
-              {/* Days */}
-              {(() => {
-                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
-                return Array.from({ length: daysInMonth }, (_, i) => {
-                  const day = i + 1
-                  const hasExpenses = transactions.some(t => {
-                    const tDate = new Date(t.date)
-                    return tDate.getFullYear() === currentYear && tDate.getMonth() === currentMonth && tDate.getDate() === day
+              {/* Calendar grid */}
+              <div className="grid grid-cols-7 gap-1 text-center">
+                {/* Days of week */}
+                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                  <div key={day} className="text-purple-500 text-sm font-medium py-2">{day}</div>
+                ))}
+                {/* Empty cells for start of month */}
+                {(() => {
+                  const firstDay = new Date(currentYear, currentMonth, 1).getDay()
+                  return Array.from({ length: firstDay }, (_, i) => <div key={`empty-${i}`} className="py-2"></div>)
+                })()}
+                {/* Days */}
+                {(() => {
+                  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
+                  return Array.from({ length: daysInMonth }, (_, i) => {
+                    const day = i + 1
+                    const hasExpenses = transactions.some((t: Transaction) => {
+                      const tDate = new Date(t.date)
+                      return tDate.getFullYear() === currentYear && tDate.getMonth() === currentMonth && tDate.getDate() === day
+                    })
+                    return (
+                      <div 
+                        key={day} 
+                        className={`py-2 px-1 rounded-md transition ${hasExpenses ? 'bg-purple-600 text-white shadow-lg' : 'text-purple-300 hover:bg-purple-800/50'}`}
+                        title={hasExpenses ? `Expenses on ${day}` : `No expenses on ${day}`}
+                      >
+                        {day}
+                        {hasExpenses && <div className="w-1 h-1 bg-fuchsia-400 rounded-full mx-auto mt-1"></div>}
+                      </div>
+                    )
                   })
-                  return (
-                    <div 
-                      key={day} 
-                      className={`py-2 px-1 rounded-md transition ${hasExpenses ? 'bg-purple-600 text-white shadow-lg' : 'text-purple-300 hover:bg-purple-800/50'}`}
-                      title={hasExpenses ? `Expenses on ${day}` : `No expenses on ${day}`}
-                    >
-                      {day}
-                      {hasExpenses && <div className="w-1 h-1 bg-fuchsia-400 rounded-full mx-auto mt-1"></div>}
-                    </div>
-                  )
-                })
-              })()}
+                })()}
+              </div>
             </div>
-          </div>
-
-          {/* Export to Excel */}
-          <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-6 mt-6">
-            <div className="text-lg font-semibold text-purple-300 mb-4">Export Data</div>
-            {user.isPremium ? (
-              <button
-                onClick={exportToExcel}
-                className="bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white px-6 py-3 rounded-xl transition shadow-lg shadow-purple-900/40 flex items-center gap-2"
-              >
-                <Download className="w-5 h-5" />
-                Export to Excel
-              </button>
-            ) : (
+          ) : (
+            <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-6 mt-6">
               <div className="text-center">
-                <div className="text-purple-400 mb-4">Upgrade to Pro to export your transaction data to Excel</div>
+                <div className="text-purple-400 mb-4">Upgrade to Pro to view calendar view of your transactions</div>
                 <Link
                   href="/subscription"
                   className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-black px-6 py-3 rounded-xl transition shadow-lg shadow-yellow-900/40 inline-flex items-center gap-2 font-semibold"
@@ -439,8 +397,11 @@ export default function TransactionsPage() {
                   Upgrade to Pro
                 </Link>
               </div>
-            )}
-          </div>
+            </div>
+          )}
+
+          {/* Export to Excel */}
+         
         </main>
       </div>
     </div>

@@ -162,6 +162,14 @@ export default function AdminDashboardPage() {
             <span>Admin Dashboard</span>
           </div>
           <nav className="space-y-3 text-sm">
+            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg bg-purple-600/20 text-purple-300 border border-purple-600/40">
+              <BarChart3 className="w-4 h-4" />
+              Overview
+            </Link>
+            <Link href="/admin/plans" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-800/60">
+              <Crown className="w-4 h-4" />
+              Plans Management
+            </Link>
             <Link href="/home" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-800/60">
               <HomeIcon className="w-4 h-4" />
               User App
