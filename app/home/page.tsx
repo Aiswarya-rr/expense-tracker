@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import TransactionForm from "../../components/TransactionForm"
 import Summary from "../../components/Summary"
-import { Plus, Upload, FileText, Plane, TrendingUp, TrendingDown, DollarSign, Home as HomeIcon, CreditCard, BarChart3, PiggyBank, Settings, LogOut, MessageSquare, Calendar } from "lucide-react"
+import { Plus, Upload, FileText, Plane, TrendingUp, TrendingDown, DollarSign, Home as HomeIcon, CreditCard, BarChart3, PiggyBank, Settings, LogOut, MessageSquare, Calendar, Crown } from "lucide-react"
 
 interface Transaction {
   _id: string
@@ -195,6 +195,10 @@ export default function Home() {
             <Link href="/bills" className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800">
               <Calendar className="w-5 h-5" />
               Bills
+            </Link>
+            <Link href="/subscription" className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800">
+              <Crown className="w-5 h-5" />
+              Subscription
             </Link>
             <Link href="#" className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-purple-800">
               <FileText className="w-5 h-5" />

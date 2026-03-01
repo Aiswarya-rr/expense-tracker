@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { Plus, Upload, FileText, Plane, Home, CreditCard, BarChart3, PiggyBank } from "lucide-react"
+import { Plus, Upload, FileText, Plane, Home, CreditCard, BarChart3, PiggyBank, Download } from "lucide-react"
+import * as XLSX from 'xlsx'
 
 interface Transaction {
   _id: string
@@ -114,12 +115,27 @@ export default function TransactionsPage() {
     }
   }
 
+  const totalIncome = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0)
+  const totalExpense = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0)
+
   if (!user) {
     return <div className="min-h-screen bg-black text-zinc-200 flex items-center justify-center">Loading...</div>
   }
 
-  const totalIncome = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0)
-  const totalExpense = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0)
+  const exportToExcel = () => {
+    const data = transactions.map(t => ({
+      Description: t.description || t.category,
+      Category: t.category,
+      Type: t.type,
+      Amount: t.amount,
+      Date: new Date(t.date).toLocaleDateString()
+    }))
+
+    const ws = XLSX.utils.json_to_sheet(data)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'Transactions')
+    XLSX.writeFile(wb, 'transactions.xlsx')
+  }
 
   return (
     <div className="min-h-screen bg-black text-purple-200">
@@ -413,6 +429,30 @@ export default function TransactionsPage() {
                 })
               })()}
             </div>
+          </div>
+
+          {/* Export to Excel */}
+          <div className="bg-gradient-to-br from-purple-900 to-purple-950 rounded-lg border border-purple-800 p-6 mt-6">
+            <div className="text-lg font-semibold text-purple-300 mb-4">Export Data</div>
+            {user.isPremium ? (
+              <button
+                onClick={exportToExcel}
+                className="bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white px-6 py-3 rounded-xl transition shadow-lg shadow-purple-900/40 flex items-center gap-2"
+              >
+                <Download className="w-5 h-5" />
+                Export to Excel
+              </button>
+            ) : (
+              <div className="text-center">
+                <div className="text-purple-400 mb-4">Upgrade to Pro to export your transaction data to Excel</div>
+                <Link
+                  href="/subscription"
+                  className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-black px-6 py-3 rounded-xl transition shadow-lg shadow-yellow-900/40 inline-flex items-center gap-2 font-semibold"
+                >
+                  Upgrade to Pro
+                </Link>
+              </div>
+            )}
           </div>
         </main>
       </div>

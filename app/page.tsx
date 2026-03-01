@@ -75,11 +75,12 @@ export default function RootPage() {
         <section className="mx-auto max-w-7xl px-6 pt-10 md:pt-20">
           <div className="text-center">
             <h1 className="mx-auto max-w-5xl text-5xl font-extrabold leading-[1.1] tracking-tight text-white md:text-7xl">
-              <span className="block">Level Up Yourr</span>
-              <span className="bg-gradient-to-b from-purple-300 to-purple-500 bg-clip-text text-transparent">Finance</span>
+              <span className="block animate-highlight-1">Level Up Yourr</span>
+              <span className="bg-gradient-to-b from-purple-300 to-purple-500 bg-clip-text text-transparent animate-highlight-2">Expense Tracking</span>
             </h1>
             <p className="mx-auto mt-4 max-w-3xl text-base text-purple-300 md:mt-6 md:text-lg">
-              Empowering youry financial journey with innovative solutions.
+ Take control of your money with smart tracking, real-time insights,
+and AI-powered financial planning — all in one powerful app.
             </p>
             <div className="mt-8 flex items-center justify-center gap-3">
               <Link href="/auth/signup" className="inline-flex items-center gap-2 rounded-full bg-purple-700 px-6 py-3 text-white shadow-lg shadow-purple-900/40 transition hover:scale-105 hover:bg-purple-600">
@@ -146,6 +147,83 @@ export default function RootPage() {
           </div>
         </section>
 
+  <section className="relative py-24 bg-gradient-to-b from-black to-purple-950/20 border-t border-purple-900/40 overflow-hidden">
+          {/* subtle vignette */}
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_60%_at_70%_40%,rgba(126,34,206,0.25),transparent_60%)]" />
+          <div className="relative mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-10 items-center">
+            {/* Left headline */}
+            <div>
+              <h2 className="text-4xl md:text-6xl font-extrabold leading-[1.1] tracking-tight text-white">
+                <span className="block animate-highlight-1">Unlock a world of</span>
+                <span className="block animate-highlight-2">convenience and</span>
+                <span className="block animate-highlight-3">exclusive benefits</span>
+                <span className="block animate-highlight-4">with your very own</span>
+                <span className="block animate-highlight-5">Expense Tracker.</span>
+              </h2>
+              <p className="mt-6 text-purple-300/90 max-w-lg">Your smart, secure and stylish way to manage payments, rewards and everyday spending.</p>
+            </div>
+
+            {/* Right tilted card */}
+            <div className="flex justify-center md:justify-end">
+              <div
+                className="relative w-[320px] h-[200px] md:w-[380px] md:h-[230px] rounded-3xl p-6 shadow-2xl border border-white/10 animate-card-rotate"
+                style={{
+                  background:
+                    'linear-gradient(145deg, rgba(99,102,241,1) 0%, rgba(168,85,247,1) 45%, rgba(236,72,153,1) 100%)'
+                }}
+              >
+                {/* inner lighting */}
+                <div className="pointer-events-none absolute -inset-1 rounded-[24px] bg-white/10 blur-2xl" />
+
+                {/* card content */}
+                <div className="relative z-10 text-white/90">
+                  <div className="text-xs tracking-widest opacity-90">1478 2258 4598 9874</div>
+                  <div className="mt-8 grid grid-cols-2 text-[10px]">
+                    <div className="opacity-80">
+                      <div>Card Holder</div>
+                      <div className="mt-1 text-sm font-semibold text-white">Elor Minton</div>
+                    </div>
+                    <div className="text-right opacity-90">
+                      <div>12/24</div>
+                    </div>
+                  </div>
+                  <div className="mt-6 flex items-center justify-between text-xs">
+                    <span className="opacity-80">Card Name</span>
+                    {/* logo circles */}
+                    <span className="relative inline-flex items-center">
+                      <span className="h-4 w-4 rounded-full bg-yellow-400 mix-blend-screen" />
+                      <span className="-ml-2 h-4 w-4 rounded-full bg-orange-500 mix-blend-screen" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Custom CSS for animations */}
+          <style jsx>{`
+            @keyframes card-rotate {
+              0% { transform: rotate(0deg); }
+              20% { transform: rotate(18deg); }
+              40% { transform: rotate(36deg); }
+              60% { transform: rotate(54deg); }
+              80% { transform: rotate(72deg); }
+              100% { transform: rotate(90deg); }
+            }
+            .animate-card-rotate {
+              animation: card-rotate 6s ease-in-out infinite alternate;
+            }
+            @keyframes highlight {
+              0%, 80% { color: white; }
+              20%, 100% { color: #a855f7; }
+            }
+            .animate-highlight-1 { animation: highlight 6s ease-in-out infinite; animation-delay: 0s; }
+            .animate-highlight-2 { animation: highlight 6s ease-in-out infinite; animation-delay: 1.2s; }
+            .animate-highlight-3 { animation: highlight 6s ease-in-out infinite; animation-delay: 2.4s; }
+            .animate-highlight-4 { animation: highlight 6s ease-in-out infinite; animation-delay: 3.6s; }
+            .animate-highlight-5 { animation: highlight 6s ease-in-out infinite; animation-delay: 4.8s; }
+          `}</style>
+        </section>
         {/* 3D Phone Animation Section */}
         <section className="py-20 bg-gradient-to-b from-black to-purple-950/20">
           <div className="mx-auto max-w-7xl px-6">
@@ -212,63 +290,140 @@ export default function RootPage() {
           </div>
         </section>
 
-        {/* Transform Journey Section */}
+        {/* Transform Journey Section
         <section className="relative py-24 bg-gradient-to-b from-black to-purple-950/20 border-t border-purple-900/40 overflow-hidden">
-          {/* Big bottom glow arc */}
+          
           <div className="pointer-events-none absolute -bottom-40 left-1/2 -translate-x-1/2 h-[380px] w-[1200px] rounded-[999px] bg-gradient-to-t from-purple-700/30 to-transparent blur-3xl" />
 
           <div className="relative mx-auto max-w-7xl px-6">
-            <div className="text-center mb-14">
-              <h2 className="text-4xl font-bold text-purple-100">Transform Your Crypto Journey</h2>
-              <p className="mt-3 text-purple-300">Experience enhanced security, speed, and convenience with our cutting-edge wallet.</p>
-              <p className="mt-1 text-xs text-purple-500/80">Created By PurpleBank</p>
+            <div className="text-center mb-20">
+              <h2 className="text-5xl md:text-7xl font-bold text-purple-100">Transform Your Crypto Journey</h2>
+              <p className="mt-6 text-lg md:text-xl text-purple-300">Experience enhanced security, speed, and convenience with our cutting-edge wallet.</p>
+              <p className="mt-2 text-sm text-purple-500/80">Created By PurpleBank</p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-3">
-              {/* Card 1 */}
-              <div className="relative overflow-hidden rounded-[28px] p-6 shadow-2xl transition-transform hover:-translate-y-1 border border-purple-800/40"
+            <div className="grid gap-12 md:grid-cols-3">
+          
+              <div className="relative overflow-hidden rounded-[32px] p-8 shadow-2xl transition-transform hover:-translate-y-2 border border-purple-800/40"
                    style={{background: 'radial-gradient(120% 100% at 50% 0%, rgba(168,85,247,0.25) 0%, rgba(0,0,0,0.6) 60%), linear-gradient(180deg, rgba(76,29,149,0.6) 0%, rgba(3,7,18,0.8) 100%)'}}>
-                {/* Decorative lights */}
-                <div className="absolute -left-10 -top-10 h-24 w-24 rounded-full bg-white/10 blur-2xl" />
-                <div className="absolute right-4 top-6 h-10 w-10 rotate-45 rounded-lg bg-white/10 blur" />
+      
+                <div className="absolute -left-12 -top-12 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
+                <div className="absolute right-6 top-8 h-12 w-12 rotate-45 rounded-lg bg-white/10 blur" />
 
                 <div className="relative z-10">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white shadow-lg shadow-purple-900/40">
-                    <Coins className="h-7 w-7" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white shadow-lg shadow-purple-900/40">
+                    <Coins className="h-8 w-8" />
                   </div>
-                  <h3 className="mt-6 text-2xl font-semibold text-white">Multi-Currency Support</h3>
-                  <p className="mt-3 text-sm leading-6 text-purple-200/90">Store and manage multiple currencies in a single, powerful wallet.</p>
+                  <h3 className="mt-8 text-3xl font-semibold text-white">Multi-Currency Support</h3>
+                  <p className="mt-4 text-base leading-7 text-purple-200/90">Store and manage multiple currencies in a single, powerful wallet.</p>
                 </div>
               </div>
 
-              {/* Card 2 */}
-              <div className="relative overflow-hidden rounded-[28px] p-6 shadow-2xl transition-transform hover:-translate-y-1 border border-purple-800/40"
+              {/* Card 2 
+              <div className="relative overflow-hidden rounded-[32px] p-8 shadow-2xl transition-transform hover:-translate-y-2 border border-purple-800/40"
                    style={{background: 'radial-gradient(120% 100% at 50% 0%, rgba(168,85,247,0.25) 0%, rgba(0,0,0,0.6) 60%), linear-gradient(180deg, rgba(55,20,122,0.7) 0%, rgba(3,7,18,0.85) 100%)'}}>
-                {/* Decorative grid lines */}
+                {/* Decorative grid lines *
                 <div className="absolute inset-0 opacity-30 [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.08)_0px,rgba(255,255,255,0.08)_1px,transparent_1px,transparent_24px),repeating-linear-gradient(90deg,rgba(255,255,255,0.06)_0px,rgba(255,255,255,0.06)_1px,transparent_1px,transparent_24px)]" />
-                <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+                <div className="absolute -right-10 -top-10 h-36 w-36 rounded-full bg-white/10 blur-2xl" />
 
                 <div className="relative z-10">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white shadow-lg shadow-purple-900/40">
-                    <LineChart className="h-7 w-7" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white shadow-lg shadow-purple-900/40">
+                    <LineChart className="h-8 w-8" />
                   </div>
-                  <h3 className="mt-6 text-2xl font-semibold text-white">Price Forecasting</h3>
-                  <p className="mt-3 text-sm leading-6 text-purple-200/90">Receive price predictions and AI-based insights to make informed decisions.</p>
+                  <h3 className="mt-8 text-3xl font-semibold text-white">Price Forecasting</h3>
+                  <p className="mt-4 text-base leading-7 text-purple-200/90">Receive price predictions and AI-based insights to make informed decisions.</p>
                 </div>
               </div>
 
-              {/* Card 3 */}
-              <div className="relative overflow-hidden rounded-[28px] p-6 shadow-2xl transition-transform hover:-translate-y-1 border border-purple-800/40"
+              {/* Card 3 
+              <div className="relative overflow-hidden rounded-[32px] p-8 shadow-2xl transition-transform hover:-translate-y-2 border border-purple-800/40"
                    style={{background: 'radial-gradient(120% 100% at 50% 0%, rgba(168,85,247,0.25) 0%, rgba(0,0,0,0.6) 60%), linear-gradient(180deg, rgba(76,29,149,0.6) 0%, rgba(3,7,18,0.85) 100%)'}}>
-                <div className="absolute -left-8 top-10 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
-                <div className="absolute right-6 -bottom-6 h-24 w-24 rounded-full bg-white/10 blur-2xl" />
+                <div className="absolute -left-10 top-12 h-36 w-36 rounded-full bg-white/10 blur-2xl" />
+                <div className="absolute right-8 -bottom-8 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
 
                 <div className="relative z-10">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white shadow-lg shadow-purple-900/40">
-                    <Zap className="h-7 w-7" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white shadow-lg shadow-purple-900/40">
+                    <Zap className="h-8 w-8" />
                   </div>
-                  <h3 className="mt-6 text-2xl font-semibold text-white">Fast Transactions</h3>
-                  <p className="mt-3 text-sm leading-6 text-purple-200/90">Instantly send and receive money worldwide without delays.</p>
+                  <h3 className="mt-8 text-3xl font-semibold text-white">Fast Transactions</h3>
+                  <p className="mt-4 text-base leading-7 text-purple-200/90">Instantly send and receive money worldwide without delays.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section> */}
+
+        {/* Connect Section (new) */}
+        <section className="relative py-28 bg-gradient-to-b from-purple-950/40 to-black border-t border-purple-900/40 overflow-hidden">
+          {/* background glow */}
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute -left-40 top-10 h-[520px] w-[520px] rounded-full bg-purple-700/25 blur-3xl" />
+            <div className="absolute -right-40 bottom-0 h-[520px] w-[520px] rounded-full bg-fuchsia-700/25 blur-3xl" />
+          </div>
+
+          <div className="relative mx-auto max-w-7xl px-6">
+            <div className="relative rounded-[28px] border border-purple-800/50 bg-purple-950/30 backdrop-blur-sm px-8 md:px-12 py-14 overflow-hidden">
+              {/* flowing squiggle */}
+              <svg className="pointer-events-none absolute -bottom-10 left-0 w-[120%] opacity-20" viewBox="0 0 1200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 120 C200 40, 300 200, 500 120 C700 40, 900 200, 1200 120" stroke="#a855f7" strokeWidth="22" strokeLinecap="round" fill="none" />
+              </svg>
+
+              <div className="relative grid md:grid-cols-2 gap-12 items-center">
+                {/* Left content */}
+                <div>
+                  <h2 className="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight text-white">
+                The expense app that keeps
+                    <span className="block bg-gradient-to-b from-purple-300 to-purple-500 bg-clip-text text-transparent">you in control</span>
+                  </h2>
+                  <p className="mt-5 text-base md:text-lg text-purple-300 max-w-xl">
+From groceries to online shopping,
+track every transaction and stay confident about your financial future.
+                  </p>
+                  <div className="mt-8 flex items-center gap-4">
+                    <a href="#" className="inline-flex items-center justify-center rounded-xl bg-white text-black px-5 py-3 text-sm font-semibold shadow-lg shadow-purple-900/30 hover:opacity-90 transition">
+                      Download on App Store
+                    </a>
+                    <a href="#" className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white px-5 py-3 text-sm font-semibold shadow-lg shadow-purple-900/40 hover:from-purple-500 hover:to-fuchsia-500 transition">
+                      Get it on Google Play
+                    </a>
+                  </div>
+                </div>
+
+                {/* Right mockup (tilted) */}
+                <div className="relative mx-auto w-full max-w-sm">
+                  <div className="relative h-[540px] w-[280px] rotate-3 rounded-[42px] border border-purple-700/60 bg-gradient-to-b from-zinc-900 to-black p-4 shadow-2xl shadow-purple-900/40 mx-auto">
+                    <div className="mx-auto mb-3 h-6 w-28 rounded-full bg-black/80" />
+                    <div className="relative h-[465px] overflow-hidden rounded-3xl bg-gradient-to-b from-purple-950 to-black p-4">
+                      <div className="text-sm text-purple-200/80">Available balance</div>
+                      <div className="mt-2 rounded-xl bg-gradient-to-br from-purple-700 to-fuchsia-700 p-4 text-white shadow-lg">
+                        <div className="text-xs opacity-80">Primary</div>
+                        <div className="mt-3 text-lg font-semibold tracking-wider">**** **** **** 9874</div>
+                        <div className="mt-2 flex justify-between text-[10px] opacity-80">
+                          <span>12/32</span>
+                          <span>VISA</span>
+                        </div>
+                      </div>
+                      <div className="mt-6 grid grid-cols-3 gap-2 text-xs text-purple-300">
+                        <div className="rounded-lg border border-purple-800/60 bg-purple-900/40 px-3 py-2 text-center">Send</div>
+                        <div className="rounded-lg border border-purple-800/60 bg-purple-900/40 px-3 py-2 text-center">Request</div>
+                        <div className="rounded-lg border border-purple-800/60 bg-purple-900/40 px-3 py-2 text-center">Cards</div>
+                      </div>
+                      <div className="mt-6 space-y-3">
+                        <div className="flex items-center justify-between text-purple-200/90">
+                          <span className="text-sm">Marta Ocampo</span>
+                          <span className="text-emerald-400">+₹580.00</span>
+                        </div>
+                        <div className="flex items-center justify-between text-purple-200/90">
+                          <span className="text-sm">Nick Blake</span>
+                          <span className="text-emerald-400">+₹420.00</span>
+                        </div>
+                        <div className="flex items-center justify-between text-purple-200/90">
+                          <span className="text-sm">Jason Gohansky</span>
+                          <span className="text-red-400">-₹153.00</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -276,83 +431,7 @@ export default function RootPage() {
         </section>
 
         {/* Footer */}
-        <section className="relative py-24 bg-gradient-to-b from-black to-purple-950/20 border-t border-purple-900/40 overflow-hidden">
-          {/* subtle vignette */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_60%_at_70%_40%,rgba(126,34,206,0.25),transparent_60%)]" />
-          <div className="relative mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-10 items-center">
-            {/* Left headline */}
-            <div>
-              <h2 className="text-4xl md:text-6xl font-extrabold leading-[1.1] tracking-tight text-white">
-                <span className="block animate-highlight-1">Unlock a world of</span>
-                <span className="block animate-highlight-2">convenience and</span>
-                <span className="block animate-highlight-3">exclusive benefits</span>
-                <span className="block animate-highlight-4">with your very own</span>
-                <span className="block animate-highlight-5">Card.</span>
-              </h2>
-              <p className="mt-6 text-purple-300/90 max-w-lg">Your smart, secure and stylish way to manage payments, rewards and everyday spending.</p>
-            </div>
-
-            {/* Right tilted card */}
-            <div className="flex justify-center md:justify-end">
-              <div
-                className="relative w-[320px] h-[200px] md:w-[380px] md:h-[230px] rounded-3xl p-6 shadow-2xl border border-white/10 animate-card-rotate"
-                style={{
-                  background:
-                    'linear-gradient(145deg, rgba(99,102,241,1) 0%, rgba(168,85,247,1) 45%, rgba(236,72,153,1) 100%)'
-                }}
-              >
-                {/* inner lighting */}
-                <div className="pointer-events-none absolute -inset-1 rounded-[24px] bg-white/10 blur-2xl" />
-
-                {/* card content */}
-                <div className="relative z-10 text-white/90">
-                  <div className="text-xs tracking-widest opacity-90">1478 2258 4598 9874</div>
-                  <div className="mt-8 grid grid-cols-2 text-[10px]">
-                    <div className="opacity-80">
-                      <div>Card Holder</div>
-                      <div className="mt-1 text-sm font-semibold text-white">Elor Minton</div>
-                    </div>
-                    <div className="text-right opacity-90">
-                      <div>12/24</div>
-                    </div>
-                  </div>
-                  <div className="mt-6 flex items-center justify-between text-xs">
-                    <span className="opacity-80">Card Name</span>
-                    {/* logo circles */}
-                    <span className="relative inline-flex items-center">
-                      <span className="h-4 w-4 rounded-full bg-yellow-400 mix-blend-screen" />
-                      <span className="-ml-2 h-4 w-4 rounded-full bg-orange-500 mix-blend-screen" />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Custom CSS for animations */}
-          <style jsx>{`
-            @keyframes card-rotate {
-              0% { transform: rotate(0deg); }
-              20% { transform: rotate(18deg); }
-              40% { transform: rotate(36deg); }
-              60% { transform: rotate(54deg); }
-              80% { transform: rotate(72deg); }
-              100% { transform: rotate(90deg); }
-            }
-            .animate-card-rotate {
-              animation: card-rotate 6s ease-in-out infinite alternate;
-            }
-            @keyframes highlight {
-              0%, 80% { color: white; }
-              20%, 100% { color: #a855f7; }
-            }
-            .animate-highlight-1 { animation: highlight 6s ease-in-out infinite; animation-delay: 0s; }
-            .animate-highlight-2 { animation: highlight 6s ease-in-out infinite; animation-delay: 1.2s; }
-            .animate-highlight-3 { animation: highlight 6s ease-in-out infinite; animation-delay: 2.4s; }
-            .animate-highlight-4 { animation: highlight 6s ease-in-out infinite; animation-delay: 3.6s; }
-            .animate-highlight-5 { animation: highlight 6s ease-in-out infinite; animation-delay: 4.8s; }
-          `}</style>
-        </section>
+      
 
         <footer className="mt-24 border-t border-purple-900/40 py-10 text-center text-sm text-purple-300/80">
           © {new Date().getFullYear()} PurpleBank. All rights reserved.
