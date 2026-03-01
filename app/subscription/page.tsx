@@ -15,6 +15,7 @@ export default function SubscriptionPage() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [plans, setPlans] = useState<any[]>([])
+  const [razorpayLoaded, setRazorpayLoaded] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -31,6 +32,8 @@ export default function SubscriptionPage() {
     const script = document.createElement('script')
     script.src = 'https://checkout.razorpay.com/v1/checkout.js'
     script.async = true
+    script.onload = () => setRazorpayLoaded(true)
+    script.onerror = () => console.error('Failed to load Razorpay script')
     document.body.appendChild(script)
 
     // Fetch plans
@@ -42,6 +45,10 @@ export default function SubscriptionPage() {
 
   const handleSubscribe = async (plan: string) => {
     if (!user) return
+    if (!razorpayLoaded) {
+      alert('Razorpay is loading. Please try again in a moment.')
+      return
+    }
 
     setLoading(true)
     try {
@@ -65,6 +72,7 @@ export default function SubscriptionPage() {
         order_id: data.orderId,
         name: 'Expense Tracker Pro',
         description: `${plan.charAt(0).toUpperCase() + plan.slice(1)} Subscription`,
+        locale: "en-IN",
         prefill: {
           name: user.name,
           email: user.email,
