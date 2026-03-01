@@ -54,7 +54,7 @@ export default function ProfilePage() {
 
   const fetchPlans = async () => {
     try {
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/plans')
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/plans`)
       if (res.ok) {
         const data = await res.json()
         setPlans(data)
@@ -80,7 +80,7 @@ export default function ProfilePage() {
       if (formData.email !== user.email) updates.email = formData.email
       if (formData.password) updates.password = formData.password
 
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/auth/update-profile', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/update-profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

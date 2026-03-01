@@ -49,13 +49,13 @@ export default function AdminDashboardPage() {
         setLoading(true)
         setError("")
         const [overviewRes, usersRes, howRes] = await Promise.all([
-          fetch("${process.env.NEXT_PUBLIC_API_URL}/api/admin/overview", {
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/overview`, {
             headers: { "x-admin-token": adminToken },
           }),
-          fetch("${process.env.NEXT_PUBLIC_API_URL}/api/admin/users", {
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/users`, {
             headers: { "x-admin-token": adminToken },
           }),
-          fetch("${process.env.NEXT_PUBLIC_API_URL}/api/admin/how-to-use", {
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/how-to-use`, {
             headers: { "x-admin-token": adminToken },
           }),
         ])
@@ -113,7 +113,7 @@ export default function AdminDashboardPage() {
   const handleSaveHowToUse = async () => {
     if (!adminToken) return
     try {
-      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/admin/how-to-use", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/how-to-use`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

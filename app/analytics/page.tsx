@@ -47,8 +47,8 @@ export default function Analytics() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       }
       const [monthlyRes, categoryRes] = await Promise.all([
-        fetch("${process.env.NEXT_PUBLIC_API_URL}/api/analytics/monthly", { headers }),
-        fetch("${process.env.NEXT_PUBLIC_API_URL}/api/analytics/category", { headers })
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/analytics/monthly`, { headers }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/analytics/category`, { headers })
       ])
 
       if (monthlyRes.ok) {

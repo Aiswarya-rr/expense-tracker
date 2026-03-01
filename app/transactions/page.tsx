@@ -58,7 +58,7 @@ export default function TransactionsPage() {
 
   const fetchTransactions = async () => {
     try {
-      const response = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/transactions", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/transactions`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -75,7 +75,7 @@ export default function TransactionsPage() {
 
   const fetchDaily = async () => {
     try {
-      const response = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/analytics/daily", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/analytics/daily`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -105,7 +105,7 @@ export default function TransactionsPage() {
     formData.append('receipt', file)
 
     try {
-      const response = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/upload-receipt', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload-receipt`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         body: formData

@@ -32,7 +32,7 @@ export default function ContactPage() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token')
 
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/contact', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
