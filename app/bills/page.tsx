@@ -43,7 +43,7 @@ export default function BillsPage() {
 
   const fetchBills = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/bills', {
+      const response = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/bills', {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       })
       if (response.ok) {
@@ -60,7 +60,7 @@ export default function BillsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const response = await fetch('http://localhost:4000/api/bills', {
+      const response = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/bills', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export default function BillsPage() {
 
   const handlePay = async (billId: string) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/bills/${billId}/pay`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bills/${billId}/pay`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       })

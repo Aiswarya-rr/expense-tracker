@@ -34,7 +34,7 @@ export default function SubscriptionPage() {
     document.body.appendChild(script)
 
     // Fetch plans
-    fetch('http://localhost:4000/api/plans')
+    fetch('${process.env.NEXT_PUBLIC_API_URL}/api/plans')
       .then(res => res.json())
       .then(setPlans)
       .catch(console.error)
@@ -45,7 +45,7 @@ export default function SubscriptionPage() {
 
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:4000/api/subscription/create-order', {
+      const response = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/subscription/create-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export default function SubscriptionPage() {
         },
         handler: async function (response: any) {
           // Verify payment
-          const verifyResponse = await fetch('http://localhost:4000/api/subscription/verify', {
+          const verifyResponse = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/subscription/verify', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

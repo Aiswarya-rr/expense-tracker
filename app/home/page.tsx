@@ -69,7 +69,7 @@ export default function Home() {
   const fetchTransactions = async () => {
     setTransactionsLoading(true)
     try {
-      const response = await fetch("http://localhost:4000/api/transactions", {
+      const response = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/transactions", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -88,7 +88,7 @@ export default function Home() {
 
   const fetchCategoryData = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/analytics/category?type=expense", {
+      const response = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/analytics/category?type=expense", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -113,7 +113,7 @@ export default function Home() {
     setError("")
 
     try {
-      const response = await fetch("http://localhost:4000/api/transactions", {
+      const response = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/transactions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

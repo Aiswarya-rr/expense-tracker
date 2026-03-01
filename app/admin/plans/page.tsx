@@ -45,7 +45,7 @@ export default function AdminPlansPage() {
   const fetchPlans = async () => {
     try {
       setLoading(true)
-      const res = await fetch("http://localhost:4000/api/plans")
+      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/plans")
       if (!res.ok) throw new Error('Failed to fetch plans')
       const data = await res.json()
       setPlans(data)
@@ -64,7 +64,7 @@ export default function AdminPlansPage() {
 
     try {
       const method = editingPlan ? 'PUT' : 'POST'
-      const url = editingPlan ? `http://localhost:4000/api/plans/${editingPlan._id}` : 'http://localhost:4000/api/plans'
+      const url = editingPlan ? `${process.env.NEXT_PUBLIC_API_URL}/api/plans/${editingPlan._id}` : '${process.env.NEXT_PUBLIC_API_URL}/api/plans'
 
       const res = await fetch(url, {
         method,
@@ -101,7 +101,7 @@ export default function AdminPlansPage() {
     if (!adminToken) return
 
     try {
-      const res = await fetch(`http://localhost:4000/api/plans/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/plans/${id}`, {
         method: 'DELETE',
         headers: { 'x-admin-token': adminToken }
       })

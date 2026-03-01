@@ -49,13 +49,13 @@ export default function AdminDashboardPage() {
         setLoading(true)
         setError("")
         const [overviewRes, usersRes, howRes] = await Promise.all([
-          fetch("http://localhost:4000/api/admin/overview", {
+          fetch("${process.env.NEXT_PUBLIC_API_URL}/api/admin/overview", {
             headers: { "x-admin-token": adminToken },
           }),
-          fetch("http://localhost:4000/api/admin/users", {
+          fetch("${process.env.NEXT_PUBLIC_API_URL}/api/admin/users", {
             headers: { "x-admin-token": adminToken },
           }),
-          fetch("http://localhost:4000/api/admin/how-to-use", {
+          fetch("${process.env.NEXT_PUBLIC_API_URL}/api/admin/how-to-use", {
             headers: { "x-admin-token": adminToken },
           }),
         ])
@@ -86,7 +86,7 @@ export default function AdminDashboardPage() {
   const handlePlanChange = async (userId: string, plan: "free" | "pro") => {
     if (!adminToken) return
     try {
-      const res = await fetch(`http://localhost:4000/api/admin/users/${userId}/subscription`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/users/${userId}/subscription`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +113,7 @@ export default function AdminDashboardPage() {
   const handleSaveHowToUse = async () => {
     if (!adminToken) return
     try {
-      const res = await fetch("http://localhost:4000/api/admin/how-to-use", {
+      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/admin/how-to-use", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

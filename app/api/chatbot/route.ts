@@ -3,7 +3,7 @@ export async function POST(request: Request) {
     const body = await request.json()
     const token = request.headers.get('authorization')
 
-    const res = await fetch('http://localhost:4000/api/chatbot', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chatbot`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
