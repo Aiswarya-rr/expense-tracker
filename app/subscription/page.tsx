@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Crown, Check, Home as HomeIcon, CreditCard, BarChart3, PiggyBank, Settings, LogOut, MessageSquare, Calendar } from "lucide-react"
+import toast from 'react-hot-toast'
 
 declare global {
   interface Window {

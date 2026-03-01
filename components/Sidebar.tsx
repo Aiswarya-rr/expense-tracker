@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, CreditCard, BarChart3, PiggyBank, MessageSquare, Calendar, Crown, Settings, LogOut } from "lucide-react"
+import { Home, CreditCard, BarChart3, PiggyBank, MessageSquare, Calendar, Crown, Settings, LogOut, User, Send } from "lucide-react"
 
 interface SidebarProps {
   user?: any
@@ -54,6 +54,14 @@ export default function Sidebar({ user, onLogout }: SidebarProps) {
         <Link href="/subscription" className={getLinkClass("/subscription")}>
           <Crown className="w-5 h-5" />
           Subscription
+        </Link>
+        <Link href="/profile" className={getLinkClass("/profile")}>
+          <User className="w-5 h-5" />
+          Profile
+        </Link>
+        <Link href="/contact" className={getLinkClass("/contact")}>
+          <Send className="w-5 h-5" />
+          Contact
         </Link>
         <Link href="/settings" className={getLinkClass("/settings")}>
           <Settings className="w-5 h-5" />

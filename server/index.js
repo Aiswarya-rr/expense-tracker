@@ -17,11 +17,9 @@ const chatbotRoutes = require('./routes/chatbot')
 const billRoutes = require('./routes/bills')
 const adminRoutes = require('./routes/admin')
 const plansRoutes = require('./routes/plans')
+const contactRoutes = require('./routes/contact')
 
 const upload = multer({ dest: 'uploads/' })
-const sgMail = require('@sendgrid/mail')
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const app = express()
 
@@ -51,6 +49,7 @@ app.use('/api/bills', billRoutes)
 app.use('/api/subscription', require('./routes/subscription'))
 app.use('/api/admin', adminRoutes)
 app.use('/api/plans', plansRoutes)
+app.use('/api/contact', contactRoutes)
 
 app.post('/api/upload-receipt', auth, upload.single('receipt'), async (req, res) => {
   try {

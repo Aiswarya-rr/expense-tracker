@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { BarChart3, Home as HomeIcon, LogOut, Crown, Plus, Edit, Trash2 } from "lucide-react"
+import toast from 'react-hot-toast'
 
 interface Plan {
   _id: string
@@ -78,9 +79,9 @@ export default function AdminPlansPage() {
 
       await fetchPlans()
       resetForm()
-      alert(editingPlan ? 'Plan updated' : 'Plan added')
+      toast.success(editingPlan ? 'Plan updated successfully' : 'Plan added successfully')
     } catch (e) {
-      alert('Error saving plan')
+      toast.error('Error saving plan')
     }
   }
 
@@ -108,9 +109,9 @@ export default function AdminPlansPage() {
       if (!res.ok) throw new Error('Failed to delete plan')
 
       await fetchPlans()
-      alert('Plan deleted')
+      toast.success('Plan deleted successfully')
     } catch (e) {
-      alert('Error deleting plan')
+      toast.error('Error deleting plan')
     }
   }
 

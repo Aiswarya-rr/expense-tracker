@@ -14,6 +14,17 @@ router.get('/', async (req, res) => {
   }
 })
 
+// GET /api/plans/:id - Get single plan
+router.get('/:id', async (req, res) => {
+  try {
+    const plan = await Plan.findById(req.params.id)
+    if (!plan) return res.status(404).json({ error: 'Plan not found' })
+    res.json(plan)
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch plan' })
+  }
+})
+
 // POST /api/plans - Add new plan (admin only)
 router.post('/', admin, async (req, res) => {
   try {
@@ -28,6 +39,7 @@ router.post('/', admin, async (req, res) => {
 
 // PUT /api/plans/:id - Update plan (admin only)
 router.put('/:id', admin, async (req, res) => {
+  console.log('PUT /api/plans/:id called with id:', req.params.id, 'admin token:', req.headers['x-admin-token'])
   try {
     const { name, price, duration, features, isPopular } = req.body
     const plan = await Plan.findByIdAndUpdate(req.params.id, { name, price, duration, features, isPopular }, { new: true })

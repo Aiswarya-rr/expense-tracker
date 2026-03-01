@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { z } = require('zod')
 const User = require('../models/User')
+const auth = require('../middleware/auth')
 
 const router = express.Router()
 
@@ -12,6 +13,30 @@ const registerSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   password: z.string().min(6),
+})
+
+const updateProfileSchema = z.object({
+  name: z.string().min(2).optional(),
+  email: z.string().email().optional(),
+  password: z.string().min(6).optional(),
+})
+
+router.put('/update-profile', auth, async (req, res) => {
+  try {
+    const updates = updateProfileSchema.parse(req.body)
+
+    if (updates.password) {
+      updates.password = await bcrypt.hash(updates.password, 10)
+    }
+
+    const user = await User.findByIdAndUpdate(req.user._id, updates, { new: true })
+    if (!user) return res.status(404).json({ error: 'User not found' })
+
+    res.json({ user: { id: user._id, name: user.name, email: user.email } })
+  } catch (err) {
+    if (err.name === 'ZodError') return res.status(400).json({ error: err.errors })
+    return res.status(500).json({ error: 'Update failed' })
+  }
 })
 
 router.post('/register', async (req, res) => {

@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const auth = require('../middleware/auth')
 const Budget = require('../models/Budget')
 const Transaction = require('../models/Transaction')
-const sgMail = require('@sendgrid/mail')
+const { transporter } = require('../lib/mailer')
 
 const router = express.Router()
 
@@ -129,9 +129,12 @@ router.get('/category', auth, async (req, res) => {
 
     // Send email notification for overspent budgets
     const overspentCategories = results.filter(c => c.status === 'overspent')
+    console.log('req.user:', req.user)
+    console.log('Overspent categories:', overspentCategories.length, 'User email:', req.user.email)
     if (overspentCategories.length > 0 && req.user.email) {
+      console.log('Sending budget exceeded email to:', req.user.email, 'for categories:', overspentCategories.map(c => c.category))
       const msg = {
-        to: process.env.RECEIVER_EMAIL,
+        to: req.user.email,
         from: process.env.FROM_EMAIL || 'noreply@expensio.com',
         subject: 'Budget Exceeded Alert - Expensio',
         text: `Your budget has been exceeded for the following categories: ${overspentCategories.map(c => `${c.category} (₹${(c.spent - c.budget).toFixed(2)} over)`).join(', ')}`,
@@ -147,7 +150,7 @@ router.get('/category', auth, async (req, res) => {
           </div>
         `
       }
-      sgMail.send(msg).catch(err => console.error('Email send error:', err))
+      transporter.sendMail(msg).catch(err => console.error('Email send error:', err))
     }
 
     console.log('Category results for user', req.user.id, ':', results)
